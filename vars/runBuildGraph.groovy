@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-def call( List tasks ) {
+def call( List tasks, Closure pre_steps = null, Closure post_steps = null ) {
 
     node('UE4') {
         def utils = new unreal.utils()
@@ -15,6 +15,11 @@ def call( List tasks ) {
     //                 bat "git clean -fdx"
     //             }
     //         }
+
+            if ( pre_steps != null ) {
+                pre_steps()
+            }
+
             stage( 'Checkout' ) {
                 checkout scm
             }
@@ -26,6 +31,10 @@ def call( List tasks ) {
                 stage( it ) {
                     UE4.runBuildGraph( env.BUILD_GRAPH_PATH, it, build_configuration )
                 }
+            }
+
+            if ( post_steps != null ) {
+                post_steps()
             }
         }
     }
