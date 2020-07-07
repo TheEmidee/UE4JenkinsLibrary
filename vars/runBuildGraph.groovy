@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-def call( List tasks, Closure pre_steps = null, Closure post_steps = null ) {
+def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure post_steps = null ) {
 
     node('UE4') {
         def utils = new unreal.utils()
@@ -29,7 +29,7 @@ def call( List tasks, Closure pre_steps = null, Closure post_steps = null ) {
 
             tasks.each {
                 stage( it ) {
-                    UE4.runBuildGraph( env.BUILD_GRAPH_PATH, it, build_configuration )
+                    UE4.runBuildGraph( env.BUILD_GRAPH_PATH, it, build_configuration, parameters )
                 }
             }
 
