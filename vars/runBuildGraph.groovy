@@ -24,10 +24,10 @@ def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure p
                 checkout scm
             }
 
+            parameters[ "OutputDir" ] = new File( env.ARCHIVE_DIRECTORY_ROOT, env.PROJECT_NAME )
+
             def UE4 = new unreal.UE4()
             UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT )
-
-            parameters[ "OutputDir" ] = env.ARCHIVE_DIRECTORY_ROOT
 
             tasks.each {
                 stage( it ) {
