@@ -14,7 +14,7 @@ def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure p
                 pre_steps()
             }
 
-            if ( parameters[ "ArchivePackage" ] == true ) {
+            if ( parameters.containsKey( "ArchivePackage" ) && parameters[ "ArchivePackage" ] == true ) {
                 dir( env.RELATIVE_ARCHIVE_DIRECTORY ) {
                     deleteDir()
                 }
