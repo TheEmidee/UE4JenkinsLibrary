@@ -45,7 +45,11 @@ def initializeNode(Script script) {
     script.env.WORKSPACE = new File( global_workspace, project_workspace_name )
     log.info "Workspace : ${script.env.WORKSPACE}"
 
-    script.env.OUTPUT_DIRECTORY = new File( script.env.WORKSPACE, "Saved\\LocalBuilds" )
+    script.env.RELATIVE_ARCHIVE_DIRECTORY = "Saved\\Archives"
+    script.env.ABSOLUTE_ARCHIVE_DIRECTORY = new File( script.env.WORKSPACE, script.env.RELATIVE_ARCHIVE_DIRECTORY )
+
+    script.env.RELATIVE_PACKAGE_DIRECTORY = "Saved\\LocalBuilds"
+    script.env.ABSOLUTE_PACKAGE_DIRECTORY = new File( script.env.WORKSPACE, script.env.RELATIVE_PACKAGE_DIRECTORY )
 }
 
 def initializeEnvironment(Script script) {

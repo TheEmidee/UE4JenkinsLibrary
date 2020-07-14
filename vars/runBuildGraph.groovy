@@ -10,21 +10,24 @@ def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure p
         skipDefaultCheckout()
 
         ws( env.WORKSPACE ) {
-    //         if ( build_configuration == BuildConfiguration.Shipping ) {
-    //             stage( 'Cleanup' ) {
-    //                 bat "git clean -fdx"
-    //             }
-    //         }
-
             if ( pre_steps != null ) {
                 pre_steps()
+            }
+
+            if ( parameters[ "ArchivePackage" ] == true ) {
+                dir( env.RELATIVE_ARCHIVE_DIRECTORY ) {
+                    deleteDir()
+                }
+                dir( env.RELATIVE_PACKAGE_DIRECTORY ) {
+                    deleteDir()
+                }
             }
 
             stage( 'Checkout' ) {
                 checkout scm
             }
 
-            parameters[ "OutputDir" ] = env.OUTPUT_DIRECTORY
+            parameters[ "OutputDir" ] = env.ABSOLUTE_PACKAGE_DIRECTORY
 
             def UE4 = new unreal.UE4()
             UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT )
