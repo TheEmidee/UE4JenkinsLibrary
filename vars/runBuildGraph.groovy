@@ -24,7 +24,7 @@ def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure p
                 checkout scm
             }
 
-            //parameters[ "OutputDir" ] = env.OUTPUT_DIRECTORY
+            parameters[ "OutputDir" ] = env.OUTPUT_DIRECTORY
 
             def UE4 = new unreal.UE4()
             UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT )
