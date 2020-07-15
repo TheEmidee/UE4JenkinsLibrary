@@ -41,7 +41,7 @@ def runBuildGraph( String script_path, String target, BuildConfiguration build_c
 
     full_script_path = "${ProjectRootFolder}/${script_path}"
 
-    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" -set:UEPath=\"${EngineRootFolder}\" ${parsed_parameters} ${additional_arguments}" )
+    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters} ${additional_arguments}" )
 }
 
 def buildDDC() {
