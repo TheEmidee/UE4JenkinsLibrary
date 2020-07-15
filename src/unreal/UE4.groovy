@@ -2,14 +2,16 @@
 
 package unreal;
 
-def UE4_CMD = ''
+def UAT_PATH = ''
+def UE4_CMD_PATH = ''
 def ScriptInvocationType = ''
 def BatchDir = ''
 def ProjectRootFolder = ''
 def ProjectName = ''
 def EngineRootFolder = ''
+def DefaultArguments = ''
 
-def initialize( String project_name, String project_root_folder, String engine_root_folder )
+def initialize( String project_name, String project_root_folder, String engine_root_folder, String default_arguments = '' )
 {
     ProjectName = project_name
     ProjectRootFolder = project_root_folder
@@ -22,8 +24,10 @@ def initialize( String project_name, String project_root_folder, String engine_r
                     : "${engine_root_folder}/Engine/Build/BatchFiles"
     ScriptInvocationType = isUnix() ?  "sh" : "bat"
 
-    UAT = "\"${engine_root_folder}/Engine/Build/BatchFiles/RunUAT.${ScriptInvocationType}\""
-    UE4_CMD = "\"${engine_root_folder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
+    UAT_PATH = "\"${engine_root_folder}/Engine/Build/BatchFiles/RunUAT.${ScriptInvocationType}\""
+    UE4_CMD_PATH = "\"${engine_root_folder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
+
+    DefaultArguments = default_arguments
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function
@@ -37,11 +41,11 @@ def runBuildGraph( String script_path, String target, BuildConfiguration build_c
 
     full_script_path = "${ProjectRootFolder}/${script_path}"
 
-    RunCommand( "${UAT} BuildGraph -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" -set:UEPath=\"${EngineRootFolder}\" ${parsed_parameters} ${additional_arguments}" )
+    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" -set:UEPath=\"${EngineRootFolder}\" ${parsed_parameters} ${additional_arguments}" )
 }
 
 def buildDDC() {
-    RunCommand( "${UE4_CMD} ${ProjectFile} -run=DerivedDataCache -fill ${DefaultArguments}" )
+    RunCommand( "${UE4_CMD_PATH} ${ProjectFile} -run=DerivedDataCache -fill ${DefaultArguments}" )
 }
 
 def generateProjectFiles() {

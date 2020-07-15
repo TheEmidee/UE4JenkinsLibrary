@@ -30,7 +30,7 @@ def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure p
             parameters[ "OutputDir" ] = env.ABSOLUTE_PACKAGE_DIRECTORY
 
             def UE4 = new unreal.UE4()
-            UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT )
+            UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT, "-BuildMachine -NoP4" )
 
             tasks.each {
                 stage( it ) {
