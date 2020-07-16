@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure post_steps = null ) {
+def call( List tasks, Map parameters = [:], String default_arguments = "", Closure pre_steps = null, Closure post_steps = null ) {
 
     node('UE4') {
         def utils = new unreal.utils()
@@ -14,27 +14,16 @@ def call( List tasks, Map parameters = [:] , Closure pre_steps = null, Closure p
                 pre_steps()
             }
 
-            if ( parameters.containsKey( "ArchivePackage" ) && parameters[ "ArchivePackage" ] == true ) {
-                dir( env.RELATIVE_ARCHIVE_DIRECTORY ) {
-                    deleteDir()
-                }
-                dir( env.RELATIVE_PACKAGE_DIRECTORY ) {
-                    deleteDir()
-                }
-            }
-
             stage( 'Checkout' ) {
                 checkout scm
             }
 
-            parameters[ "OutputDir" ] = env.ABSOLUTE_PACKAGE_DIRECTORY
-
             def UE4 = new unreal.UE4()
-            UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT, "-BuildMachine -NoP4" )
+            UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT, default_arguments )
 
             tasks.each {
                 stage( it ) {
-                    UE4.runBuildGraph( env.BUILD_GRAPH_PATH, it, build_configuration, parameters )
+                    UE4.runBuildGraph( env.RELATIVE_BUILD_GRAPH_PATH, it, build_configuration, parameters )
                 }
             }
 
