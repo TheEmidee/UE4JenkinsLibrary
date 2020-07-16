@@ -31,7 +31,7 @@ def initialize( String project_name, String project_root_folder, String engine_r
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function
-def runBuildGraph( String script_path, String target, BuildConfiguration build_configuration, def parameters = [:], String additional_arguments = "" ) {
+def runBuildGraph( String script_path, String target, BuildConfiguration build_configuration, def parameters = [:] ) {
     String parsed_parameters = ""
 
     parameters.each
@@ -41,7 +41,7 @@ def runBuildGraph( String script_path, String target, BuildConfiguration build_c
 
     full_script_path = "${ProjectRootFolder}/${script_path}"
 
-    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters} ${additional_arguments}" )
+    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters}" )
 }
 
 def buildDDC() {
