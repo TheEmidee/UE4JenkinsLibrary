@@ -26,11 +26,6 @@ enum BuildConfiguration {
 def initializeNode(Script script) {
     log.info "Initialize Node"
 
-    log.info "ARCHIVE_DIRECTORY_ROOT : ${script.env.ARCHIVE_DIRECTORY_ROOT}"
-    if ( script.env.ARCHIVE_DIRECTORY_ROOT == null || script.env.ARCHIVE_DIRECTORY_ROOT.isEmpty() ) {
-        log.fatal "Missing environment variable ARCHIVE_DIRECTORY_ROOT. Add it to the node properties."
-    }
-
     log.info "UE4_ROOT : ${script.env.UE4_ROOT}"
     if ( script.env.UE4_ROOT == null || script.env.UE4_ROOT.isEmpty() ) {
         log.fatal "Missing environment variable UE4_ROOT. Add it to the node properties."
@@ -44,12 +39,6 @@ def initializeNode(Script script) {
 
     script.env.WORKSPACE = new File( global_workspace, project_workspace_name )
     log.info "Workspace : ${script.env.WORKSPACE}"
-
-    script.env.RELATIVE_ARCHIVE_DIRECTORY = "Saved\\Archives"
-    script.env.ABSOLUTE_ARCHIVE_DIRECTORY = new File( script.env.WORKSPACE, script.env.RELATIVE_ARCHIVE_DIRECTORY )
-
-    script.env.RELATIVE_PACKAGE_DIRECTORY = "Saved\\LocalBuilds"
-    script.env.ABSOLUTE_PACKAGE_DIRECTORY = new File( script.env.WORKSPACE, script.env.RELATIVE_PACKAGE_DIRECTORY )
 }
 
 def initializeEnvironment(Script script) {
