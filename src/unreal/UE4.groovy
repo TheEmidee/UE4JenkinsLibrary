@@ -39,7 +39,7 @@ def runBuildGraph( String script_path, String target, BuildConfiguration build_c
         parameter -> parsed_parameters += "-set:${parameter.key}=\"${parameter.value}\" "
     }
 
-    full_script_path = "${ProjectRootFolder}/${script_path}"
+    full_script_path = new File( ProjectRootFolder, script_path ).toString()
 
     RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters}" )
 }
