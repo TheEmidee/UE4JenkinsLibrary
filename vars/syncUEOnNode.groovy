@@ -24,7 +24,11 @@ def mustSyncUE() {
     }
     fileOperations([fileRenameOperation(destination: "Saved\\JenkinsBuild.version.reference", source: "Saved\\JenkinsBuild.version")])
     
-    roboCopy( "${env.UE4_ROOT}\\Windows\\Engine\\Build", "${env.WORKSPACE}\\Saved", "JenkinsBuild.version" )
+    try {
+        roboCopy( "${env.UE4_ROOT}\\Windows\\Engine\\Build", "${env.WORKSPACE}\\Saved", "JenkinsBuild.version" )
+    } catch ( Exception e ) {
+        return true
+    }
     exists = fileExists "Saved\\JenkinsBuild.version"
 
     if ( !exists ) {
