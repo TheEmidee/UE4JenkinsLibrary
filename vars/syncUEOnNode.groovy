@@ -1,15 +1,15 @@
 #!/usr/bin/groovy
 
 def call() {
-    log.info "Check if the engine must be synchronized on the node ${env.NODE_NAME}"
+    stage ( "SyncUE" ) {
+        log.info "Check if the engine must be synchronized on the node ${env.NODE_NAME}"
 
-    if ( mustSyncUE() ) {
-        log.warning "Must Sync Engine on node ${env.NODE_NAME}"
-        stage ( "SyncUE" ) {
+        if ( mustSyncUE() ) {
+            log.warning "Must Sync Engine on node ${env.NODE_NAME}"
             roboCopy( env.UE4_REFERENCE_BUILD_LOCATION, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
+        } else {
+            log.info "No need to sync"
         }
-    } else {
-        log.info "No need to sync"
     }
 }
 
