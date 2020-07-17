@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurper;
 
 package unreal;
 
