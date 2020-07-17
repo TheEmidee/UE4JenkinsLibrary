@@ -63,6 +63,24 @@ def initializeEnvironment(Script script) {
     log.info "ClientConfiguration : ${script.env.CLIENT_CONFIG}"
 }
 
+def getGitHubPRTitle( github_token ) {
+    branch_name = env.GIT_BRANCH
+    if (env.BRANCH_NAME != null) {
+        branch_name = env.BRANCH_NAME
+    }
+
+    pr_id = branch_name.substring( 3 )
+    echo "PR ID : ${pr_id}"
+
+    String url = "https://api.github.com/repos/FishingCactus/${env.PROJECT_NAME}/pulls/${pr_id}"
+    
+    def text = url.toURL().getText( requestProperties: [ 'Authorization' : "token ${github_token}" ] )
+    def json = new JsonSlurper().parseText( text )
+
+    log.info "PR Title : ${json.title}"
+    return json.title
+}
+
 def getProjectName(def script) {
     split_result = "${script.env.JOB_NAME}".split('/')
     project_name = split_result.length > 1 ? split_result[split_result.length - 2] : split_result.max()
