@@ -80,6 +80,9 @@ def getGitHubPRTitle( github_token ) {
     def json = new JsonSlurper().parseText( text )
 
     log.info "PR Title : ${json.title}"
+    
+    env.PULL_REQUEST_TITLE + json.title
+
     return json.title
 }
 
