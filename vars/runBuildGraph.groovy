@@ -24,7 +24,7 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
             }
 
             def UE4 = new unreal.UE4()
-            UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT, default_arguments )
+            UE4.initialize( env.PROJECT_NAME, env.WORKSPACE, env.UE4_ROOT_WINDOWS, default_arguments )
 
             tasks.each {
                 stage( it ) {

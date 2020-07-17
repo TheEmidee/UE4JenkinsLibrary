@@ -31,6 +31,8 @@ def initializeNode(Script script) {
         log.fatal "Missing environment variable UE4_ROOT. Add it to the node properties."
     }
 
+    script.env.UE4_ROOT_WINDOWS = "${script.env.UE4_ROOT}\\Windows"
+
     global_workspace = new File( script.env.WORKSPACE ).parent
     project_workspace_name = script.env.PROJECT_NAME
     project_workspace_name += ( script.env.DEPLOYMENT_ENVIRONMENT as DeploymentEnvironment ) == DeploymentEnvironment.Shipping
