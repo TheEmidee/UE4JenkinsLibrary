@@ -14,31 +14,38 @@ def call() {
 }
 
 def mustSyncUE() {
+    def jenkins_build_version = "JenkinsBuild.version"
+    def jenkins_build_version_reference = "${jenkins_build_version}.reference"
+    def jenkins_build_version_local = "${jenkins_build_version}.local"
+    def saved_jenkins_build_version = "Saved\\${jenkins_build_version}"
+    def saved_jenkins_build_version_reference = "Saved\\${jenkins_build_version_reference}"
+    def saved_jenkins_build_version_local = "Saved\\${jenkins_build_version_local}"
+
     fileOperations([fileDeleteOperation(excludes: '', includes: 'Saved\\JenkinsBuild.*')])
 
-    roboCopy( "${env.UE4_REFERENCE_BUILD_LOCATION}\\Engine\\Build", "${env.WORKSPACE}\\Saved", "JenkinsBuild.version" )
-    def exists = fileExists "Saved\\JenkinsBuild.version"
+    roboCopy( "${env.UE4_REFERENCE_BUILD_LOCATION}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version )
+    def exists = fileExists saved_jenkins_build_version
     if ( !exists ) {
         log.warning "Could not find a JenkinsBuild.version file in the network folder"
         return true
     }
-    fileOperations([fileRenameOperation(destination: "Saved\\JenkinsBuild.version.reference", source: "Saved\\JenkinsBuild.version")])
+    fileOperations([fileRenameOperation(destination: saved_jenkins_build_version_reference, source: saved_jenkins_build_version)])
     
     try {
-        roboCopy( "${env.UE4_ROOT}\\Windows\\Engine\\Build", "${env.WORKSPACE}\\Saved", "JenkinsBuild.version" )
+        roboCopy( "${env.UE4_ROOT}\\Windows\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version )
     } catch ( Exception e ) {
         return true
     }
-    exists = fileExists "Saved\\JenkinsBuild.version"
+    exists = fileExists saved_jenkins_build_version
 
     if ( !exists ) {
         log.warning "Could not find a JenkinsBuild.version file in the local folder"
         return true
     }
-    fileOperations([fileRenameOperation(destination: "Saved\\JenkinsBuild.version.local", source: "Saved\\JenkinsBuild.version")])
+    fileOperations([fileRenameOperation(destination: saved_jenkins_build_version_local, source: saved_jenkins_build_version )])
 
-    def version_reference = readFile encoding: 'utf-8', file: 'Saved\\JenkinsBuild.version.reference'
-    def version_local = readFile encoding: 'utf-8', file: 'Saved\\JenkinsBuild.version.local'
+    def version_reference = readFile encoding: 'utf-8', file: saved_jenkins_build_version_reference
+    def version_local = readFile encoding: 'utf-8', file: saved_jenkins_build_version_local
 
     log.info "UE4 Reference version ${version_reference}"
     log.info "UE4 Local version ${version_local}"
