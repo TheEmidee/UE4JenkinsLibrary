@@ -12,7 +12,6 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
         ws( env.WORKSPACE ) {
 
             if ( env.UE4_SYNC_ENGINE_ON_NODES ) {
-                echo "env.UE4_SYNC_ENGINE_ON_NODES: " + env.UE4_SYNC_ENGINE_ON_NODES
                 syncUEOnNode()
             }
 
