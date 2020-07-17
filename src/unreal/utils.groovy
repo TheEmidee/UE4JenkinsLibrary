@@ -1,8 +1,8 @@
 #!/usr/bin/groovy
 
-import groovy.json.JsonSlurper;
-
 package unreal;
+
+import groovy.json.JsonSlurper;
 
 enum BranchType {
     Development,
