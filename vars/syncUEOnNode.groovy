@@ -3,8 +3,8 @@
 def call() {
     if ( mustSyncUE() ) {
         echo "Must Sync"
-        //roboCopy( env.UE4SharedFolder, env.UE4_ROOT, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
-        echo "roboCopy from ${env.UE4SharedFolder} to ${env.UE4_ROOT} with args /J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR"
+        //roboCopy( env.UE4_REFERENCE_BUILD_LOCATION, env.UE4_ROOT, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
+        echo "roboCopy from ${env.UE4_REFERENCE_BUILD_LOCATION} to ${env.UE4_ROOT} with args /J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR"
     } else {
         echo "No need to sync"
     }
@@ -13,7 +13,7 @@ def call() {
 def mustSyncUE() {
     fileOperations([fileDeleteOperation(excludes: '', includes: 'Saved\\JenkinsBuild.*')])
 
-    roboCopy( "${env.UE4SharedFolder}\\Engine\\Build", "${env.WORKSPACE}\\Saved", "JenkinsBuild.version" )
+    roboCopy( "${env.UE4_REFERENCE_BUILD_LOCATION}\\Engine\\Build", "${env.WORKSPACE}\\Saved", "JenkinsBuild.version" )
     def exists = fileExists "Saved\\JenkinsBuild.version"
     if ( !exists ) {
         echo "Could not find a JenkinsBuild.version file in the network folder"

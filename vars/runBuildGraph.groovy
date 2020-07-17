@@ -10,6 +10,11 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
         skipDefaultCheckout()
 
         ws( env.WORKSPACE ) {
+
+            if ( env.SYNC_UE_ON_NODES ) {
+                syncUEOnNode
+            }
+
             if ( pre_steps != null ) {
                 pre_steps()
             }
