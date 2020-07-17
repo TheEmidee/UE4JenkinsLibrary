@@ -81,7 +81,7 @@ def getGitHubPRTitle( github_token ) {
 
     log.info "PR Title : ${json.title}"
     
-    env.PULL_REQUEST_TITLE + json.title
+    env.PULL_REQUEST_TITLE = json.title
 
     return json.title
 }
