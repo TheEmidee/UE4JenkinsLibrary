@@ -11,7 +11,7 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
 
         ws( env.WORKSPACE ) {
 
-            if ( env.SYNC_UE_ON_NODES ) {
+            if ( env.UE4_SYNC_ENGINE_ON_NODES ) {
                 syncUEOnNode
             }
 
@@ -28,7 +28,7 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
 
             tasks.each {
                 stage( it ) {
-                    UE4.runBuildGraph( env.RELATIVE_BUILD_GRAPH_PATH, it, build_configuration, parameters )
+                    UE4.runBuildGraph( env.UE4_RELATIVE_BUILD_GRAPH_PATH, it, build_configuration, parameters )
                 }
             }
 
