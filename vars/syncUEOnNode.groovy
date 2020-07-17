@@ -6,7 +6,7 @@ def call() {
     if ( mustSyncUE() ) {
         log.warning "Must Sync Engine on node ${env.NODE_NAME}"
         stage ( "SyncUE" ) {
-            roboCopy( env.UE4_REFERENCE_BUILD_LOCATION, env.UE4_ROOT, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
+            roboCopy( env.UE4_REFERENCE_BUILD_LOCATION, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
         }
     } else {
         log.info "No need to sync"
