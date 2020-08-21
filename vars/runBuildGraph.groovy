@@ -19,6 +19,8 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
                 pre_steps()
             }
 
+            parameters[ "ProjectDir" ] = env.WORKSPACE
+
             stage( 'Checkout' ) {
                 checkout scm
             }
