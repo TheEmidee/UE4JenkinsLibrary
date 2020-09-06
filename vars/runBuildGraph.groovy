@@ -1,10 +1,6 @@
 #!/usr/bin/groovy
 
-<<<<<<< HEAD
-def call( List tasks, Map parameters = [:], String default_arguments = "", Closure pre_steps = null, Closure post_steps = null ) {
-=======
-def call( List tasks, Closure pre_steps = null, Closure post_steps = null, Closure error_steps = null ) {
->>>>>>> Added error_steps to runBuildGraph
+def call( List tasks, Map parameters = [:], String default_arguments = "", Closure pre_steps = null, Closure post_steps = null, Closure error_steps = null ) {
 
     node('UE4') {
         def utils = new unreal.utils()
