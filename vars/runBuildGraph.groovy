@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-def call( List tasks, Map parameters = [:], String default_arguments = "", Closure pre_steps = null, Closure post_steps = null, Closure error_steps = null ) {
+def call( List tasks, Map parameters = [:], String default_arguments = "", Closure pre_steps = null, Closure post_steps = null, Closure error_steps = null, Closure finally_steps = null ) {
 
     node('UE4') {
         def utils = new unreal.utils()
@@ -44,6 +44,11 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
                     error_steps()
                 }
                 throw e
+            }
+            finally {
+                if ( finally_steps != null ) {
+                    finally_steps()
+                }
             }
         }
     }
