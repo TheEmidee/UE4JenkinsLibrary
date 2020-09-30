@@ -6,7 +6,6 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
         def utils = new unreal.utils()
         utils.initializeNode(this)
 
-        def build_configuration = env.CLIENT_CONFIG as unreal.BuildConfiguration
         skipDefaultCheckout()
 
         ws( env.WORKSPACE ) {
@@ -31,7 +30,7 @@ def call( List tasks, Map parameters = [:], String default_arguments = "", Closu
             try {
                 tasks.each {
                     stage( it ) {
-                        UE4.runBuildGraph( env.UE4_RELATIVE_BUILD_GRAPH_PATH, it, build_configuration, parameters )
+                        UE4.runBuildGraph( env.UE4_RELATIVE_BUILD_GRAPH_PATH, it, parameters )
                     }
 
                     if ( post_steps != null ) {

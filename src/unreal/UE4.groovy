@@ -31,7 +31,7 @@ def initialize( String project_name, String project_root_folder, String engine_r
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function
-def runBuildGraph( String script_path, String target, BuildConfiguration build_configuration, def parameters = [:] ) {
+def runBuildGraph( String script_path, String target, def parameters = [:] ) {
     String parsed_parameters = ""
 
     parameters.each

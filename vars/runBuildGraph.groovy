@@ -7,7 +7,7 @@ def call( List tasks, Map parameters = [:], String default_arguments = "" ) {
 
     tasks.each {
         stage( it ) {
-            UE4.runBuildGraph( env.UE4_RELATIVE_BUILD_GRAPH_PATH, it, build_configuration, parameters )
+            UE4.runBuildGraph( env.UE4_RELATIVE_BUILD_GRAPH_PATH, it, parameters )
         }
     }
 }
