@@ -47,7 +47,7 @@ def runBuildGraph( String script_path, String target, def parameters = [:] ) {
 }
 
 def generateProjectFiles() {
-    RunCommand( "\"${UBT_PATH} -projectfiles -project=${ProjectFile} -game -rocket -vs2019 -progress" )
+    RunCommand( "\"${UBT_PATH} -projectfiles -project=${ProjectPath} -game -rocket -vs2019 -progress" )
 }
 
 def RunCommand( def Command ) {
