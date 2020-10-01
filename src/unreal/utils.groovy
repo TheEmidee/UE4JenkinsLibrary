@@ -45,14 +45,19 @@ def initializeNode(Script script) {
     log.info "Workspace : ${script.env.WORKSPACE}"
 }
 
-def initializeEnvironment(Script script) {
+def initializeEnvironment(Script script, String project_name_override = null) {
     log.info "InitializeEnvironment"
 
     branch_type = getBranchType( script.env.BRANCH_NAME )
     deployment_environment = getBranchDeploymentEnvironment( branch_type )
     client_config = getClientConfig( deployment_environment )
 
-    script.env.PROJECT_NAME = getProjectName( script )
+    if ( project_name_override != null ) {
+        script.env.PROJECT_NAME = project_name_override
+    } else {
+        script.env.PROJECT_NAME = getProjectName( script )
+    }
+
     log.info "ProjectName : ${script.env.PROJECT_NAME}"
 
     script.env.BRANCH_TYPE = branch_type
