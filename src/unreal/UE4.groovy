@@ -4,6 +4,7 @@ package unreal;
 
 def UAT_PATH = ''
 def UE4_CMD_PATH = ''
+def UBT_PATH = ''
 def ScriptInvocationType = ''
 def BatchDir = ''
 def ProjectRootFolder = ''
@@ -26,6 +27,7 @@ def initialize( String project_name, String project_root_folder, String engine_r
 
     UAT_PATH = "\"${engine_root_folder}/Engine/Build/BatchFiles/RunUAT.${ScriptInvocationType}\""
     UE4_CMD_PATH = "\"${engine_root_folder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
+    UBT_PATH = "\"${engine_root_folder}/Engine/Binaries/DotNET/UnrealBuildTool.exe\""
 
     DefaultArguments = default_arguments
 }
@@ -44,12 +46,8 @@ def runBuildGraph( String script_path, String target, def parameters = [:] ) {
     RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters}" )
 }
 
-def buildDDC() {
-    RunCommand( "${UE4_CMD_PATH} ${ProjectFile} -run=DerivedDataCache -fill ${DefaultArguments}" )
-}
-
 def generateProjectFiles() {
-    RunCommand( "\"${BatchDir}/GenerateProjectFiles.${ScriptInvocationType}\" -projectfiles -project=${ProjectFile} -game -engine -progress ${DefaultArguments}" )
+    RunCommand( "\"${UBT_PATH} -projectfiles -project=${ProjectFile} -game -rocket -vs2019 -progress" )
 }
 
 def RunCommand( def Command ) {
