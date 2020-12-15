@@ -70,7 +70,7 @@ def initializeEnvironment(Script script, String project_name_override = null) {
     log.info "ClientConfiguration : ${script.env.CLIENT_CONFIG}"
 }
 
-def getGitHubPRTitle( github_token ) {
+def getGitHubPRTitleAndBody( github_token ) {
     branch_name = env.GIT_BRANCH
     if (env.BRANCH_NAME != null) {
         branch_name = env.BRANCH_NAME
@@ -85,10 +85,8 @@ def getGitHubPRTitle( github_token ) {
     def json = new JsonSlurper().parseText( text )
 
     log.info "PR Title : ${json.title}"
-    
-    env.PULL_REQUEST_TITLE = json.title
 
-    return json.title
+    return [ json.title, json.body ]
 }
 
 def getProjectName(def script) {
@@ -113,7 +111,7 @@ def getBranchDeploymentEnvironment( BranchType branch_type ) {
     switch ( branch_type ) {
         case BranchType.Development:
             return DeploymentEnvironment.Development
-        case BranchType.Development:
+        case BranchType.Release:
             return DeploymentEnvironment.Release
         case BranchType.Master:
             return DeploymentEnvironment.Shipping
