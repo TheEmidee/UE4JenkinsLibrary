@@ -96,7 +96,6 @@ def getGitHubPRLastCommitterEmail( github_token ) {
     }
 
     pr_id = branch_name.substring( 3 )
-    echo "PR ID : ${pr_id}"
 
     String url = "https://api.github.com/repos/FishingCactus/${env.PROJECT_NAME}/pulls/${pr_id}/commits"
     
