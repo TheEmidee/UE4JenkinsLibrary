@@ -70,7 +70,7 @@ def initializeEnvironment(Script script, String project_name_override = null) {
     log.info "ClientConfiguration : ${script.env.CLIENT_CONFIG}"
 }
 
-def getGitHubPRTitleAndBody( github_token ) {
+def getGitHubPRInfos( github_token ) {
     branch_name = env.GIT_BRANCH
     if (env.BRANCH_NAME != null) {
         branch_name = env.BRANCH_NAME
@@ -86,7 +86,7 @@ def getGitHubPRTitleAndBody( github_token ) {
 
     log.info "PR Title : ${json.title}"
 
-    return [ json.title, json.body ]
+    return [ json.title, json.body, json.user.login, json.user.avatar_url ]
 }
 
 def getProjectName(def script) {
