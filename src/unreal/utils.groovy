@@ -102,7 +102,8 @@ def getGitHubPRLastCommitterEmail( github_token ) {
     
     def text = url.toURL().getText( requestProperties: [ 'Authorization' : "token ${github_token}" ] )
     def json = new JsonSlurper().parseText( text )
-    def last_commit = json[ 0 ]
+    def commits_count = json.size()
+    def last_commit = json[ commits_count - 1 ]
 
     log.info "Last commit SHA : ${last_commit.sha}"
 
