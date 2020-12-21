@@ -6,7 +6,7 @@ def call( config ) {
 
         if ( mustSyncUE( config ) ) {
             log.warning "Must Sync Engine on node ${env.NODE_NAME}"
-            roboCopy( config.RelativeBuildGraphPath, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
+            roboCopy( config.SyncEngineReferenceBuildLocation, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
         } else {
             log.info "No need to sync"
         }
@@ -23,7 +23,7 @@ def mustSyncUE( config ) {
 
     fileOperations([fileDeleteOperation(excludes: '', includes: 'Saved\\JenkinsBuild.*')])
 
-    roboCopy( "${config.RelativeBuildGraphPath}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version )
+    roboCopy( "${config.SyncEngineReferenceBuildLocation}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version )
     def exists = fileExists saved_jenkins_build_version
     if ( !exists ) {
         log.warning "Could not find a JenkinsBuild.version file in the network folder"
