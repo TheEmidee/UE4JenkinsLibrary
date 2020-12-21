@@ -12,8 +12,10 @@ def ProjectName = ''
 def EngineRootFolder = ''
 def DefaultArguments = ''
 
-def initialize( String project_name, String project_root_folder, String engine_root_folder, String default_arguments = '' )
+def initialize( config )
 {
+    //String project_name, String project_root_folder, String engine_root_folder, String default_arguments = ''
+
     ProjectName = project_name
     ProjectRootFolder = project_root_folder
     EngineRootFolder = engine_root_folder
