@@ -9,6 +9,9 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
+    println( ue4_config.project.DataValidation )
+    println( buildgraph_task_name )
+
     stage( "Data Validation" ) {
         ue4RunBuildGraph( 
             ue4_config,
