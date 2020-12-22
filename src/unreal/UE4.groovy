@@ -12,26 +12,23 @@ def ProjectName = ''
 def EngineRootFolder = ''
 def DefaultArguments = ''
 
-def initialize( config )
+def initialize( ue4_config )
 {
-    //String project_name, String project_root_folder, String engine_root_folder, String default_arguments = ''
+    ProjectName = ue4_config.project.Name
+    ProjectRootFolder = env.WORKSPACE
+    EngineRootFolder = ue4_config.engine.Location
+    DefaultArguments = ue4_config.engine.DefaultArguments
 
-    ProjectName = project_name
-    ProjectRootFolder = project_root_folder
-    EngineRootFolder = engine_root_folder
-
-    ProjectPath = "${project_root_folder}/${project_name}.uproject"
+    ProjectPath = "${ProjectRootFolder}/${ProjectName}.uproject"
 
     BatchDir = isUnix() 
-                    ? "${engine_root_folder}/Engine/Build/BatchFiles/Linux" 
-                    : "${engine_root_folder}/Engine/Build/BatchFiles"
+                    ? "${EngineRootFolder}/Engine/Build/BatchFiles/Linux" 
+                    : "${EngineRootFolder}/Engine/Build/BatchFiles"
     ScriptInvocationType = isUnix() ?  "sh" : "bat"
 
-    UAT_PATH = "\"${engine_root_folder}/Engine/Build/BatchFiles/RunUAT.${ScriptInvocationType}\""
-    UE4_CMD_PATH = "\"${engine_root_folder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
-    UBT_PATH = "\"${engine_root_folder}/Engine/Binaries/DotNET/UnrealBuildTool.exe\""
-
-    DefaultArguments = default_arguments
+    UAT_PATH = "\"${EngineRootFolder}/Engine/Build/BatchFiles/RunUAT.${ScriptInvocationType}\""
+    UE4_CMD_PATH = "\"${EngineRootFolder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
+    UBT_PATH = "\"${EngineRootFolder}/Engine/Binaries/DotNET/UnrealBuildTool.exe\""
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function
