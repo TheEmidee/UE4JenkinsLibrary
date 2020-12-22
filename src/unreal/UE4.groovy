@@ -17,7 +17,7 @@ def initialize( ue4_config )
 {
     ProjectName = ue4_config.project.Name
     ProjectRootFolder = env.WORKSPACE
-    EngineRootFolder = ue4_config.engine.Location
+    EngineRootFolder = "${ue4_config.engine.Location}/Windows"
     DefaultArguments = ue4_config.engine.DefaultArguments
 
     ProjectPath = "${ProjectRootFolder}/${ProjectName}.uproject"
