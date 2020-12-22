@@ -53,11 +53,13 @@ def generateProjectFiles() {
 }
 
 def RunCommand( def Command ) {
-    if(isUnix()) {
-        sh( script: Command )
-    } else {
-        bat( script: Command )
-    }
+    // if(isUnix()) {
+    //     sh( script: Command )
+    // } else {
+    //     bat( script: Command )
+    // }
+
+    echo Command
 }
 
 return this
