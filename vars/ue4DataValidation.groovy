@@ -6,6 +6,11 @@ def call( ue4_config ) {
         buildgraph_tasks.add( task.BuildGraphTask )
     }
 
+    if ( ue4_config.project.DataValidation.size() == 0 ) {
+        log.warning "No Data Validation will be done. Did you forget to fill in the DataValidation section of the config file?"
+        return
+    }
+
     stage( "Data Validation" ) {
         ue4RunBuildGraph( 
             ue4_config,

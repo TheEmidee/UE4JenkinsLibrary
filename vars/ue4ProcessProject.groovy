@@ -19,4 +19,6 @@ def call( ue4_config ) {
         "ZipPackage" : false,
         "OutputDir" : "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\Win64"
     ]
+
+    ue4DataValidation ue4config
 }
