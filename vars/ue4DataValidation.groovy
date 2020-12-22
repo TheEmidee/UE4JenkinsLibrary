@@ -15,11 +15,10 @@ def call( ue4_config, buildgraph_params ) {
         ue4RunBuildGraph( 
             ue4_config,
             buildgraph_tasks,
-            buildgraph_params//,
-            //swarms_buildgraph_arguments
+            buildgraph_params
             )
 
-        msbuild_reports += scanForIssues filters: [excludeCategory('ModuleManager|SwarmsEditor')], tool: msBuild()
+        recordIssues failOnError: true, sourceCodeEncoding: 'UTF-8', tools: [ msbuild() ], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], filters: [excludeCategory('ModuleManager|SwarmsEditor')]
 
         ue4_config.project.DataValidation.each{ task -> 
             try {
