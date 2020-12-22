@@ -35,7 +35,7 @@ def initialize( ue4_config )
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function
-def runBuildGraph( String script_path, String target, def parameters = [:] ) {
+def runBuildGraph( String target, def parameters = [:] ) {
     String parsed_parameters = ""
 
     parameters.each
