@@ -20,5 +20,5 @@ def call( ue4_config ) {
         "OutputDir" : "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\Win64"
     ]
 
-    ue4DataValidation ue4_config
+    ue4DataValidation ue4_config, buildgraph_params
 }

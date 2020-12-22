@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-def call( ue4_config ) {
+def call( ue4_config, buildgraph_params ) {
     def buildgraph_tasks = []
     ue4_config.project.DataValidation.each{ task -> 
         buildgraph_tasks.add( task.BuildGraphTask )
