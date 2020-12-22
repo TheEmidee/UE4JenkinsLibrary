@@ -6,6 +6,6 @@ def call( ue4_config, List tasks, Map parameters = [:] ) {
     UE4.initialize( ue4_config )
 
     tasks.each {
-        UE4.runBuildGraph( env.UE4_RELATIVE_BUILD_GRAPH_PATH, it, parameters )
+        UE4.runBuildGraph( it, parameters )
     }
 }

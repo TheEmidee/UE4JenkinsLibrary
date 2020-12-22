@@ -11,6 +11,7 @@ def ProjectRootFolder = ''
 def ProjectName = ''
 def EngineRootFolder = ''
 def DefaultArguments = ''
+def BuildGraphPath = ''
 
 def initialize( ue4_config )
 {
@@ -29,6 +30,8 @@ def initialize( ue4_config )
     UAT_PATH = "\"${EngineRootFolder}/Engine/Build/BatchFiles/RunUAT.${ScriptInvocationType}\""
     UE4_CMD_PATH = "\"${EngineRootFolder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
     UBT_PATH = "\"${EngineRootFolder}/Engine/Binaries/DotNET/UnrealBuildTool.exe\""
+
+    BuildGraphPath = new File( ProjectRootFolder, ue4_config.project.BuildGraphPath ).toString()
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function
@@ -40,9 +43,7 @@ def runBuildGraph( String script_path, String target, def parameters = [:] ) {
         parameter -> parsed_parameters += "-set:${parameter.key}=\"${parameter.value}\" "
     }
 
-    full_script_path = new File( ProjectRootFolder, script_path ).toString()
-
-    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${full_script_path}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters}" )
+    RunCommand( "${UAT_PATH} BuildGraph ${DefaultArguments} -target=\"${target}\" -script=\"${BuildGraphPath}\" -set:ProjectPath=\"${ProjectPath}\" ${parsed_parameters}" )
 }
 
 def generateProjectFiles() {
