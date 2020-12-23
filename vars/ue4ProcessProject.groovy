@@ -5,7 +5,6 @@ def call( ue4_config ) {
         fileDeleteOperation( excludes: '', includes: 'Saved\\*.zip' ), 
         fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' ), 
         fileDeleteOperation( excludes: '', includes: 'Saved\\UnitTestsReport\\*.*'),
-        fileDeleteOperation( excludes: '', includes: 'Saved\\Tests\\GauntletTestsLogs.zip' ) ,
         folderDeleteOperation( 'Saved\\Tests' ),
         folderDeleteOperation( ue4_config.project.RelativeOutputDirectory )
     ] )
@@ -20,7 +19,7 @@ def call( ue4_config ) {
     ue4DataValidation ue4_config, buildgraph_params
 
     if ( ue4_config.project.Tests.Run ) {
-        ue4RunTests ue4_config
+        ue4RunTests ue4_config, buildgraph_params
     }
 
     buildgraph_params[ "ArchivePackage" ] = ue4_config.project.Archive
