@@ -18,6 +18,10 @@ def call( ue4_config ) {
 
     ue4DataValidation ue4_config, buildgraph_params
 
+    if ( ue4_config.project.Tests.Run ) {
+        ue4RunTests ue4_config, buildgraph_params
+    }
+
     buildgraph_params[ "ArchivePackage" ] = ue4_config.project.Package.Archive
     buildgraph_params[ "ZipPackage" ] = ue4_config.project.Package.Archive && ue4_config.project.Package.Zip
 
@@ -26,14 +30,10 @@ def call( ue4_config ) {
     ue4_config.project.Package.Targets.each { iterator -> 
         def target = iterator.Target
 
-        //tasks[ "${target.Type} - ${target.Platform}" ] = {
+        tasks[ "${target.Type} - ${target.Platform}" ] = {
             ue4PackageTarget target.Type, target.Platform, ue4_config, buildgraph_params
-        //}
+        }
     }
 
-    //parallel tasks
-
-    if ( ue4_config.project.Tests.Run ) {
-        ue4RunTests ue4_config, buildgraph_params
-    }
+    parallel tasks
 }
