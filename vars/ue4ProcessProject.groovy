@@ -29,10 +29,10 @@ def call( ue4_config ) {
     ue4_config.project.Package.Targets.each { iterator -> 
         def target = iterator.Target
 
-        tasks[ "${target.Type} - ${target.Platform}" ] = {
+        //tasks[ "${target.Type} - ${target.Platform}" ] = {
             ue4PackageTarget target.Type, target.Platform, ue4_config, buildgraph_params
-        }
+        //}
     }
 
-    parallel tasks
+    //parallel tasks
 }
