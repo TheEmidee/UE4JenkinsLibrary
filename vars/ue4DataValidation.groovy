@@ -9,6 +9,8 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
+    ue4DeleteLogs
+
     stage( "Data Validation" ) {
         ue4RunBuildGraph( 
             ue4_config,

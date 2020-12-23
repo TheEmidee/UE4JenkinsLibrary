@@ -8,6 +8,8 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
+    ue4DeleteLogs
+
     stage( buildgraph_task_name ) {
         try {
             ue4RunBuildGraph( 
@@ -18,12 +20,8 @@ def call( ue4_config, buildgraph_params ) {
         } finally {
             ue4ZipLogs "Tests"
 
-            def folder = new File( 'Saved\\Tests\\Logs' )
-
-            if ( folder.exists() ) {
-                zip archive: true, dir: folder.toString(), glob: '', zipFile: 'Saved\\Tests\\TestsLogs.zip'
-                junit testResults: "Saved\\Tests\\Logs\\FunctionalTestsResults.xml"
-            }
+            zip archive: true, dir: folder.toString(), glob: '', zipFile: 'Saved\\Tests\\TestsLogs.zip'
+            junit testResults: "Saved\\Tests\\Logs\\FunctionalTestsResults.xml"
         }
     }
 }

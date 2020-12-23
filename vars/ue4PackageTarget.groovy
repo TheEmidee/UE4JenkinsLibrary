@@ -10,6 +10,8 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
     buildgraph_params[ "OutputDir" ] = "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\${type}\\${platform}"
 
+    ue4DeleteLogs
+
     stage( buildgraph_task_name ) {
         ue4RunBuildGraph(
             ue4_config,
