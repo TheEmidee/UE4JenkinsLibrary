@@ -24,8 +24,8 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
         }
 
-        publishIssues name: "MSBuild Issues", issues: msbuild_reports, qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
-        
+        recordIssues failOnError: true, filters: [excludeCategory('ModuleManager|SwarmsEditor')], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], tools: [msBuild()]
+
         def logs_zip_file_name = "Saved\\${zip_file_name}_Logs.zip"
         zip archive: true, dir: 'Saved\\Logs\\', glob: '', zipFile: logs_zip_file_name
     }
