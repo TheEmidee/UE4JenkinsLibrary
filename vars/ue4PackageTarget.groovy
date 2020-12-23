@@ -19,6 +19,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             buildgraph_params
         )
 
+        echo "Must package? ${ue4_config.project.MustPackage}"
         if ( ue4_config.project.MustPackage ) {
             archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
         }

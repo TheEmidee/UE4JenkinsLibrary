@@ -5,6 +5,7 @@ def call( ue4_config ) {
         fileDeleteOperation( excludes: '', includes: 'Saved\\*.zip' ), 
         fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' ), 
         fileDeleteOperation( excludes: '', includes: 'Saved\\UnitTestsReport\\*.*'),
+        folderDeleteOperation( 'Saved\\LocalBuilds' ),
         folderDeleteOperation( 'Saved\\Tests' ),
         folderDeleteOperation( ue4_config.project.RelativeOutputDirectory )
     ] )
