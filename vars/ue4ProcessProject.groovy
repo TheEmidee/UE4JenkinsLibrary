@@ -14,11 +14,27 @@ def call( ue4_config ) {
         "Clean" : params.CLEAN_PROJECT,
         "ProjectDir" : env.WORKSPACE,
         "BuildConfiguration": params.DEBUG_BUILDS ? "Debug" : "Development",
-        "ArchivePackage" : ue4_config.project.MustPackage,
-        // Don't zip in buildgraph. We'll zip both client and server for Win64 in one go in jenkins
-        "ZipPackage" : false,
-        "OutputDir" : "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\Win64"
+        "OutputDir": "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}"
     ]
 
     ue4DataValidation ue4_config, buildgraph_params
+
+    if ( ue4_config.project.Tests.Run ) {
+        ue4RunTests ue4_config
+    }
+
+    buildgraph_params[ "ArchivePackage" ] = ue4_config.project.Archive
+    buildgraph_params[ "ZipPackage" ] = ue4_config.project.Archive && ue4_config.project.Zip
+
+    def tasks = [:]
+
+    ue4_config.project.Package.Targets.each { iterator -> 
+        def target = iterator.Target
+
+        tasks[ "${target.Type} - ${target.Platform}" ] = {
+            ue4PackageTarget target.Type, target.Platform, ue4_config, buildgraph_params
+        }
+    }
+
+    parallel tasks
 }

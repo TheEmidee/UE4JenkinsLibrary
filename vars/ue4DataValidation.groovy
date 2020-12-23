@@ -9,9 +9,6 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
-    println( ue4_config.project.DataValidation )
-    println( buildgraph_task_name )
-
     stage( "Data Validation" ) {
         ue4RunBuildGraph( 
             ue4_config,
@@ -20,9 +17,8 @@ def call( ue4_config, buildgraph_params ) {
             )
 
         recordIssues failOnError: true, filters: [excludeCategory('ModuleManager|SwarmsEditor')], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], tools: [msBuild()]
-        //recordIssues failOnError: true, sourceCodeEncoding: 'UTF-8', tools: [ msbuild() ], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], filters: [excludeCategory('ModuleManager|SwarmsEditor')]
 
-        ue4_config.project.DataValidation.Parsers.each{ task -> 
+        ue4_config.project.DataValidation.Parsers.each { task -> 
             def parser = task.Parser
 
             try {
