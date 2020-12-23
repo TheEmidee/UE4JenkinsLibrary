@@ -8,6 +8,8 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
     def buildgraph_task_name = "Package ${ue4_config.project.Name} ${type} ${platform}"
 
+    buildgraph_params[ "OutputDir" ] = "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\${type}\\${platform}"
+
     stage( buildgraph_task_name ) {
 
         fileOperations( [ 

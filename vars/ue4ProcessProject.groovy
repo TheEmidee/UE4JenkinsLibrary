@@ -12,8 +12,7 @@ def call( ue4_config ) {
     buildgraph_params = [
         "Clean" : params.CLEAN_PROJECT,
         "ProjectDir" : env.WORKSPACE,
-        "BuildConfiguration": params.DEBUG_BUILDS ? "Debug" : "Development",
-        "OutputDir": "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}"
+        "BuildConfiguration": params.DEBUG_BUILDS ? "Debug" : "Development"
     ]
 
     ue4DataValidation ue4_config, buildgraph_params
