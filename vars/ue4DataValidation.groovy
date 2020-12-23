@@ -23,16 +23,18 @@ def call( ue4_config, buildgraph_params ) {
         //recordIssues failOnError: true, sourceCodeEncoding: 'UTF-8', tools: [ msbuild() ], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], filters: [excludeCategory('ModuleManager|SwarmsEditor')]
 
         ue4_config.project.DataValidation.Parsers.each{ task -> 
+            def parser = task.Parser
+
             try {
                 timeout(time: 120, unit: 'SECONDS') {
-                    def log_file_path = "Saved\\Logs\\${task.LogFileName}.log"
+                    def log_file_path = "Saved\\Logs\\${parser.LogFileName}.log"
 
                     // recordIssues sometimes times out so first scan then publish
-                    def data_validation_issues = scanForIssues blameDisabled: true, forensicsDisabled: true, tool: groovyScript(parserId: "${task.ParserName}", pattern: "${log_file_path}", reportEncoding: 'UTF-8')
+                    def data_validation_issues = scanForIssues blameDisabled: true, forensicsDisabled: true, tool: groovyScript(parserId: "${parser.ParserName}", pattern: "${log_file_path}", reportEncoding: 'UTF-8')
                     publishIssues failOnError: true, qualityGates: [[threshold: 1, type: 'TOTAL', unstable: false]], issues: [ data_validation_issues ]
                 }
             } catch ( e ) {
-                echo "Error during issues for ${task.ParserName} " + e.toString()
+                echo "Error during issues for ${parser.ParserName} " + e.toString()
             }
         }
 
