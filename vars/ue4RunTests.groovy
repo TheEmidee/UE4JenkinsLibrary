@@ -10,7 +10,7 @@ def call( ue4_config, buildgraph_params ) {
 
     stage( buildgraph_task_name ) {
         try {
-            runBuildGraph( 
+            ue4RunBuildGraph( 
                 ue4_config,
                 buildgraph_task_name,
                 buildgraph_params
