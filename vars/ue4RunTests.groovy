@@ -20,7 +20,7 @@ def call( ue4_config, buildgraph_params ) {
         } finally {
             ue4ZipLogs "Tests"
 
-            zip archive: true, dir: folder.toString(), glob: '', zipFile: 'Saved\\Tests\\TestsLogs.zip'
+            zip archive: true, dir: "Saved\\Tests\\Logs", glob: '', zipFile: 'Saved\\Tests\\TestsLogs.zip'
             junit testResults: "Saved\\Tests\\Logs\\FunctionalTestsResults.xml"
         }
     }
