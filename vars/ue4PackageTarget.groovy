@@ -14,7 +14,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' )
         ] )
         
-        runBuildGraph(
+        ue4RunBuildGraph(
             ue4_config,
             buildgraph_task_name,
             buildgraph_params
