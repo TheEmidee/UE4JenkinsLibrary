@@ -22,8 +22,8 @@ def call( ue4_config ) {
         ue4RunTests ue4_config, buildgraph_params
     }
 
-    buildgraph_params[ "ArchivePackage" ] = ue4_config.project.Archive
-    buildgraph_params[ "ZipPackage" ] = ue4_config.project.Archive && ue4_config.project.Zip
+    buildgraph_params[ "ArchivePackage" ] = ue4_config.project.Package.Archive
+    buildgraph_params[ "ZipPackage" ] = ue4_config.project.Package.Archive && ue4_config.project.Package.Zip
 
     def tasks = [:]
 

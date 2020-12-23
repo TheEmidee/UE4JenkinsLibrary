@@ -3,7 +3,7 @@
 def call( String type, String platform, ue4_config, buildgraph_params ) {
     def zip_file_name = "${ue4_config.project.Name}_${type}_${platform}"
     def relative_zip_file_path = "${ue4_config.project.RelativeOutputDirectory}\\${zip_file_name}.zip"
-    
+
     buildgraph_params[ "ZipFile" ] = "${env.WORKSPACE}\\${relative_zip_file_path}"
 
     def buildgraph_task_name = "Package ${ue4_config.project.Name} ${type} ${platform}"
