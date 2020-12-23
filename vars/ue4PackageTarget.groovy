@@ -11,11 +11,6 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
     buildgraph_params[ "OutputDir" ] = "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\${type}\\${platform}"
 
     stage( buildgraph_task_name ) {
-
-        fileOperations( [ 
-            fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' )
-        ] )
-        
         ue4RunBuildGraph(
             ue4_config,
             buildgraph_task_name,
@@ -28,7 +23,6 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
         recordIssues failOnError: true, filters: [excludeCategory('ModuleManager|SwarmsEditor')], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], tools: [msBuild()]
 
-        def logs_zip_file_name = "Saved\\${zip_file_name}_Logs.zip"
-        zip archive: true, dir: 'Saved\\Logs\\', glob: '', zipFile: logs_zip_file_name
+        ue4ZipLogs zip_file_name
     }
 }

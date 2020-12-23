@@ -16,6 +16,8 @@ def call( ue4_config, buildgraph_params ) {
                 buildgraph_params
                 )
         } finally {
+            ue4ZipLogs "Tests"
+
             def folder = new File( 'Saved\\Tests\\Logs' )
 
             if ( folder.exists() ) {

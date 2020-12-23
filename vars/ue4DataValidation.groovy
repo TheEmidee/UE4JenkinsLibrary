@@ -16,8 +16,6 @@ def call( ue4_config, buildgraph_params ) {
             buildgraph_params
             )
 
-        recordIssues failOnError: true, filters: [excludeCategory('ModuleManager|SwarmsEditor')], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]], tools: [msBuild()]
-
         ue4_config.project.DataValidation.Parsers.each { task -> 
             def parser = task.Parser
 
@@ -34,6 +32,6 @@ def call( ue4_config, buildgraph_params ) {
             }
         }
 
-        zip archive: true, dir: 'Saved\\Logs\\', glob: '', zipFile: 'Saved\\DataValidationLogs.zip'
+        ue4ZipLogs "DataValidation"
     }
 }
