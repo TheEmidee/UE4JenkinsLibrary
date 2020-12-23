@@ -25,15 +25,17 @@ def call( ue4_config ) {
     buildgraph_params[ "ArchivePackage" ] = ue4_config.project.Package.Archive
     buildgraph_params[ "ZipPackage" ] = ue4_config.project.Package.Archive && ue4_config.project.Package.Zip
 
-    def tasks = [:]
+    // ATM its not possible to run in parallel out of the box. To do so, each task run in parallel must allocate a new node
+
+    //def tasks = [:]
 
     ue4_config.project.Package.Targets.each { iterator -> 
         def target = iterator.Target
 
-        tasks[ "${target.Type} - ${target.Platform}" ] = {
+        //tasks[ "${target.Type} - ${target.Platform}" ] = {
             ue4PackageTarget target.Type, target.Platform, ue4_config, buildgraph_params
-        }
+        //}
     }
 
-    parallel tasks
+    //parallel tasks
 }
