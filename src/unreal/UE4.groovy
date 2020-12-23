@@ -50,12 +50,14 @@ def generateProjectFiles() {
     RunCommand( "${UBT_PATH} -projectfiles -project=${ProjectPath} -game -rocket -vs2019 -progress" )
 }
 
-def RunCommand( def Command ) {
-    if(isUnix()) {
-        sh( script: Command )
-    } else {
-        bat( script: Command )
-    }
+def RunCommand( String command ) {
+    // if(isUnix()) {
+    //     sh( script: command )
+    // } else {
+    //     bat( script: command )
+    // }
+
+    echo command
 }
 
 return this
