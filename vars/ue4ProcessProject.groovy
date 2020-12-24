@@ -1,20 +1,10 @@
 #!/usr/bin/groovy
 
 def call( ue4_config, Closure on_stage_start = null ) {
-    fileOperations( [ 
-        fileDeleteOperation( excludes: '', includes: 'Saved\\*.zip' ), 
-        fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' ), 
-        fileDeleteOperation( excludes: '', includes: 'Saved\\UnitTestsReport\\*.*'),
-        folderDeleteOperation( 'Saved\\LocalBuilds' ),
-        folderDeleteOperation( 'Saved\\Tests' ),
-        folderDeleteOperation( ue4_config.Project.RelativeOutputDirectory )
-    ] )
 
-    buildgraph_params = [
-        "Clean" : params.CLEAN_PROJECT,
-        "ProjectDir" : env.WORKSPACE,
-        "BuildConfiguration": params.DEBUG_BUILDS ? "Debug" : "Development"
-    ]
+    ue4CleanSavedFolder ue4_config
+
+    def buildgraph_params = ue4InitializeBuildGraphParameters()
 
     if ( on_stage_start != null ) {
         on_stage_start( "Data Validation" )
