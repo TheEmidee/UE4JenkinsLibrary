@@ -1,19 +1,19 @@
 #!/usr/bin/groovy
 
-def call() {
+def call( ue4_config ) {
     stage ( "SyncUE" ) {
         log.info "Check if the engine must be synchronized on the node ${env.NODE_NAME}"
 
-        if ( mustSyncUE() ) {
+        if ( mustSyncUE( ue4_config ) ) {
             log.warning "Must Sync Engine on node ${env.NODE_NAME}"
-            roboCopy( env.UE4_REFERENCE_BUILD_LOCATION, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
+            roboCopy( ue4_config.Engine.ReferenceBuildLocation, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
         } else {
             log.info "No need to sync"
         }
     }
 }
 
-def mustSyncUE() {
+def mustSyncUE( ue4_config ) {
     def jenkins_build_version = "JenkinsBuild.version"
     def jenkins_build_version_reference = "${jenkins_build_version}.reference"
     def jenkins_build_version_local = "${jenkins_build_version}.local"
@@ -23,7 +23,7 @@ def mustSyncUE() {
 
     fileOperations([fileDeleteOperation(excludes: '', includes: 'Saved\\JenkinsBuild.*')])
 
-    roboCopy( "${env.UE4_REFERENCE_BUILD_LOCATION}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version )
+    roboCopy( "${ue4_config.Engine.ReferenceBuildLocation}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version )
     def exists = fileExists saved_jenkins_build_version
     if ( !exists ) {
         log.warning "Could not find a JenkinsBuild.version file in the network folder"
