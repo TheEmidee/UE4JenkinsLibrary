@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 
-def call( ue4_config ) {
+def call( ue4_config, Closure on_stage_start = null ) {
     fileOperations( [ 
         fileDeleteOperation( excludes: '', includes: 'Saved\\*.zip' ), 
         fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' ), 
@@ -16,9 +16,16 @@ def call( ue4_config ) {
         "BuildConfiguration": params.DEBUG_BUILDS ? "Debug" : "Development"
     ]
 
+    if ( on_stage_start != null ) {
+        on_stage_start( "Data Validation" )
+    }
+
     ue4DataValidation ue4_config, buildgraph_params
 
     if ( ue4_config.project.Tests.Run ) {
+        if ( on_stage_start != null ) {
+            on_stage_start( "Run Tests" )
+        }
         ue4RunTests ue4_config, buildgraph_params
     }
 
@@ -33,6 +40,9 @@ def call( ue4_config ) {
         def target = iterator.Target
 
         //tasks[ "${target.Type} - ${target.Platform}" ] = {
+            if ( on_stage_start != null ) {
+                on_stage_start( "Package ${target.Type} ${target.Platform}" )
+            }
             ue4PackageTarget target.Type, target.Platform, ue4_config, buildgraph_params
         //}
     }
