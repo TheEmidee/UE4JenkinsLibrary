@@ -15,7 +15,7 @@ def BuildGraphPath = ''
 
 def initialize( ue4_config )
 {
-    ProjectName = ue4_config.project.Name
+    ProjectName = ue4_config.Project.Name
     ProjectRootFolder = env.WORKSPACE
     EngineRootFolder = "${ue4_config.Engine.Location}/Windows"
     DefaultArguments = ue4_config.Engine.DefaultArguments
@@ -31,7 +31,7 @@ def initialize( ue4_config )
     UE4_CMD_PATH = "\"${EngineRootFolder}/Engine/Binaries/Win64/UE4Editor-Cmd.exe\""
     UBT_PATH = "\"${EngineRootFolder}/Engine/Binaries/DotNET/UnrealBuildTool.exe\""
 
-    BuildGraphPath = new File( ProjectRootFolder, ue4_config.project.BuildGraphPath ).toString()
+    BuildGraphPath = new File( ProjectRootFolder, ue4_config.Project.BuildGraphPath ).toString()
 }
 
 // script_path is the location of the XML file relative to the project root folder used in the initialize function

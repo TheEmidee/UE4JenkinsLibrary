@@ -1,14 +1,14 @@
 #!/usr/bin/groovy
 
 def call( String type, String platform, ue4_config, buildgraph_params ) {
-    def zip_file_name = "${ue4_config.project.Name}_${type}_${platform}"
-    def relative_zip_file_path = "${ue4_config.project.RelativeOutputDirectory}\\${zip_file_name}.zip"
+    def zip_file_name = "${ue4_config.Project.Name}_${type}_${platform}"
+    def relative_zip_file_path = "${ue4_config.Project.RelativeOutputDirectory}\\${zip_file_name}.zip"
 
     buildgraph_params[ "ZipFile" ] = "${env.WORKSPACE}\\${relative_zip_file_path}"
 
-    def buildgraph_task_name = "Package ${ue4_config.project.Name} ${type} ${platform}"
+    def buildgraph_task_name = "Package ${ue4_config.Project.Name} ${type} ${platform}"
 
-    buildgraph_params[ "OutputDir" ] = "${env.WORKSPACE}\\${ue4_config.project.RelativeOutputDirectory}\\${type}\\${platform}"
+    buildgraph_params[ "OutputDir" ] = "${env.WORKSPACE}\\${ue4_config.Project.RelativeOutputDirectory}\\${type}\\${platform}"
 
     ue4DeleteLogs
 
@@ -19,7 +19,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             buildgraph_params
         )
 
-        if ( ue4_config.project.MustPackage ) {
+        if ( ue4_config.Project.MustPackage ) {
             archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
         }
 

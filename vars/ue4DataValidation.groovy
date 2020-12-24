@@ -2,7 +2,7 @@
 
 def call( ue4_config, buildgraph_params ) {
 
-    def buildgraph_task_name = ue4_config.project.DataValidation.BuildGraphTaskName
+    def buildgraph_task_name = ue4_config.Project.DataValidation.BuildGraphTaskName
 
     if ( buildgraph_task_name == "" ) {
         log.warning "No Data Validation will be done. Did you forget to fill in the DataValidation.BuildGraphTaskName section of the config file?"
@@ -18,7 +18,7 @@ def call( ue4_config, buildgraph_params ) {
             buildgraph_params
             )
 
-        ue4_config.project.DataValidation.Parsers.each { task -> 
+        ue4_config.Project.DataValidation.Parsers.each { task -> 
             def parser = task.Parser
 
             try {
