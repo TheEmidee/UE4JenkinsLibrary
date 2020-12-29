@@ -16,7 +16,7 @@ def call( ue4_config ) {
 
         if ( mustSyncUE( ue4_config ) ) {
             log.warning "Must Sync Engine on node ${env.NODE_NAME}"
-            // roboCopy( ue4_config.Engine.ReferenceBuildLocation, env.UE4_ROOT_WINDOWS, "/J /NOOFFLOAD /S /R:5 /W:5 /TBD /NP /V /MT:16 /MIR" )
+            syncUEOnNode ue4_config
         } else {
             log.info "No need to sync"
         }
@@ -80,4 +80,11 @@ def mustSyncUE( ue4_config ) {
     }
 
     return false
+}
+
+def syncUEOnNode( ue4_config ){
+    def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
+    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
+
+    roboCopy( reference_engine_location, local_engine_location, "UE4.zip" )
 }
