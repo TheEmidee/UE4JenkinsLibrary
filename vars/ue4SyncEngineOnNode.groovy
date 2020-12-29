@@ -47,6 +47,7 @@ def mustSyncUE( ue4_config ) {
         return true
     }
 
+    log.info "Rename ${saved_jenkins_build_version} into ${saved_jenkins_build_version_reference}"
     fileOperations( [ fileRenameOperation( destination: saved_jenkins_build_version_reference, source: saved_jenkins_build_version ) ] )
 
     // Now copy from the engine location on the node the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.local
@@ -64,6 +65,7 @@ def mustSyncUE( ue4_config ) {
         return true
     }
 
+    log.info "Rename ${saved_jenkins_build_version} into ${saved_jenkins_build_version_local}"
     fileOperations( [ fileRenameOperation( destination: saved_jenkins_build_version_local, source: saved_jenkins_build_version ) ] )
 
     def version_reference = readFile encoding: 'utf-8', file: saved_jenkins_build_version_reference
