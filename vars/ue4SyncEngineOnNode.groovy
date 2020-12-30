@@ -83,10 +83,19 @@ def mustSyncUE( ue4_config ) {
 }
 
 def syncUEOnNode( ue4_config ){
+    // copyArchiveOnNode( ue4_config )
+    extractArchive( ue4_config )
+}
+
+def copyArchiveOnNode( ue4_config ) {
     def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
     def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
 
-    //roboCopy( reference_engine_location, local_engine_location, "UE4.zip" )
+    roboCopy( reference_engine_location, local_engine_location, "UE4.zip" )
+}
 
-    powershell "Expand-Archive -LiteralPath ${local_engine_location}\\UE4.zip -DestinationPath ${local_engine_location} -Force"
+def extractArchive( ue4_config ) {
+    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
+
+    powershell "& \${env:ProgramFiles}\\7-Zip\\7z.exe x -aoa ${local_engine_location}\\UE4.zip \"-o${local_engine_location}\" -y"
 }
