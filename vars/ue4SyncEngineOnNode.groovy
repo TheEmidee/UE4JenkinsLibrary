@@ -83,8 +83,9 @@ def mustSyncUE( ue4_config ) {
 }
 
 def syncUEOnNode( ue4_config ){
-    // copyArchiveOnNode( ue4_config )
+    copyArchiveOnNode( ue4_config )
     extractArchive( ue4_config )
+    deleteArchive( ue4_config )
 }
 
 def copyArchiveOnNode( ue4_config ) {
@@ -98,4 +99,11 @@ def extractArchive( ue4_config ) {
     def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
 
     powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${local_engine_location}\\UE4.zip \"-o${local_engine_location}\" -y"
+}
+
+def deleteArchive( ue4_config ) {
+    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
+    def zip_path = "${local_engine_location}\\UE4.zip"
+
+    powershell "Remove-Item -Path ${zip_path} -Force"
 }
