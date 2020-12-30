@@ -51,9 +51,7 @@ def mustSyncUE( ue4_config ) {
     fileOperations( [ fileRenameOperation( destination: saved_jenkins_build_version_reference, source: saved_jenkins_build_version ) ] )
 
     // Now copy from the engine location on the node the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.local
-    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
-
-    if ( !roboCopy( "${local_engine_location}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version ) ) {
+    if ( !roboCopy( "${ue4_config.Engine.Location}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version ) ) {
         log.warning "Failed to copy ${jenkins_build_version}"
         return true
     }
@@ -90,20 +88,16 @@ def syncUEOnNode( ue4_config ){
 
 def copyArchiveOnNode( ue4_config ) {
     def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
-    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
 
-    roboCopy( reference_engine_location, local_engine_location, "UE4.zip" )
+    roboCopy( reference_engine_location, ue4_config.Engine.Location, "UE4.zip" )
 }
 
 def extractArchive( ue4_config ) {
-    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
-
-    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${local_engine_location}\\UE4.zip \"-o${local_engine_location}\" -y"
+    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\UE4.zip \"-o${ue4_config.Engine.Location}\" -y"
 }
 
 def deleteArchive( ue4_config ) {
-    def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
-    def zip_path = "${local_engine_location}\\UE4.zip"
+    def zip_path = "${ue4_config.Engine.Location}\\UE4.zip"
 
     powershell "Remove-Item -Path ${zip_path} -Force"
 }
