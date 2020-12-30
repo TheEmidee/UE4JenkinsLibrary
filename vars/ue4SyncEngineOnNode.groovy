@@ -97,5 +97,5 @@ def copyArchiveOnNode( ue4_config ) {
 def extractArchive( ue4_config ) {
     def local_engine_location = "${env.NODE_UE4_ROOT}\\${ue4_config.Engine.Version}"
 
-    powershell "& \${env:ProgramFiles}\\7-Zip\\7z.exe x -aoa ${local_engine_location}\\UE4.zip \"-o${local_engine_location}\" -y"
+    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${local_engine_location}\\UE4.zip \"-o${local_engine_location}\" -y"
 }
