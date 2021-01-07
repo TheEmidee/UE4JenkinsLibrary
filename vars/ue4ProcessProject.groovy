@@ -12,13 +12,6 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
     ue4DataValidation ue4_config, buildgraph_params
 
-    if ( ue4_config.Project.Tests.Run ) {
-        if ( on_stage_start != null ) {
-            on_stage_start( "Run Tests" )
-        }
-        ue4RunTests ue4_config, buildgraph_params
-    }
-
     buildgraph_params[ "ArchivePackage" ] = ue4_config.Project.Package.Archive
     buildgraph_params[ "ZipPackage" ] = ue4_config.Project.Package.Archive && ue4_config.Project.Package.Zip
 
@@ -38,4 +31,11 @@ def call( ue4_config, Closure on_stage_start = null ) {
     }
 
     //parallel tasks
+
+    if ( ue4_config.Project.Tests.Run ) {
+        if ( on_stage_start != null ) {
+            on_stage_start( "Run Tests" )
+        }
+        ue4RunTests ue4_config, buildgraph_params
+    }
 }
