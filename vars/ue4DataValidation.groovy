@@ -27,7 +27,7 @@ def call( ue4_config, buildgraph_params ) {
 
                     // recordIssues sometimes times out so first scan then publish
                     def data_validation_issues = scanForIssues blameDisabled: true, forensicsDisabled: true, tool: groovyScript(parserId: "${parser.ParserName}", pattern: "${log_file_path}", reportEncoding: 'UTF-8')
-                    publishIssues failOnError: true, qualityGates: [[threshold: 1, type: 'TOTAL', unstable: false]], issues: [ data_validation_issues ]
+                    publishIssues failOnError: true, qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true]], issues: [ data_validation_issues ]
                 }
             } catch ( e ) {
                 echo "Error during issues for ${parser.ParserName} " + e.toString()
