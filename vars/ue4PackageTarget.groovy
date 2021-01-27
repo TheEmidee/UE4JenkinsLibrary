@@ -23,11 +23,11 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
         }
 
-        def config_excluded_categories = ""
+        def config_excluded_categories = ue4_config.Project.Package.IssuesExcludedCategories.join('|')
 
-        ue4_config.Project.Package.IssuesExcludedCategories.each { category -> 
-            config_excluded_categories = config_excluded_categories + "|${category}"
-        }
+        // ue4_config.Project.Package.IssuesExcludedCategories.each { category -> 
+        //     config_excluded_categories = config_excluded_categories + "|${category}"
+        // }
 
         println "config_excluded_categories : ${config_excluded_categories}"
 
