@@ -25,12 +25,6 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
         def config_excluded_categories = ue4_config.Project.Package.IssuesExcludedCategories.join('|')
 
-        // ue4_config.Project.Package.IssuesExcludedCategories.each { category -> 
-        //     config_excluded_categories = config_excluded_categories + "|${category}"
-        // }
-
-        println "config_excluded_categories : ${config_excluded_categories}"
-
         recordIssues(tools: [groovyScript(id: "BuildCookRun_${type}_${platform}", name: "BuildCookRun_${type}_${platform}", parserId: 'UE4_BuildCookRun', pattern: 'Saved/Logs/Log.txt')], , failOnError: true, filters: [excludeCategory( config_excluded_categories )], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]])
         recordIssues tools: [msBuild(id: "MSBuild_${type}_${platform}", name: "MSBuild_${type}_${platform}")], failOnError: true, filters: [excludeCategory( 'ModuleManager|SwarmsEditor' )], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
 
