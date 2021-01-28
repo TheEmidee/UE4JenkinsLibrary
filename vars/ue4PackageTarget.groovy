@@ -23,7 +23,10 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
         }
 
-        recordIssues tools: [msBuild(id: "MSBuild_${type}_${platform}", name: "MSBuild_${type}_${platform}")], failOnError: true, filters: [excludeCategory('ModuleManager|SwarmsEditor')], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
+        def config_excluded_categories = ue4_config.Project.IssuesExcludedCategories.join('|')
+
+        recordIssues(tools: [groovyScript(id: "BuildCookRun_${type}_${platform}", name: "BuildCookRun_${type}_${platform}", parserId: 'UE4_BuildCookRun', pattern: 'Saved/Logs/Log.txt')], , failOnError: true, filters: [excludeCategory( config_excluded_categories )], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]])
+        recordIssues tools: [msBuild(id: "MSBuild_${type}_${platform}", name: "MSBuild_${type}_${platform}")], failOnError: true, filters: [excludeCategory( 'ModuleManager|SwarmsEditor' )], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
 
         ue4ZipLogs zip_file_name
     }
