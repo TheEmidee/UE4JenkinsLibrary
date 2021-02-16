@@ -134,7 +134,7 @@ def copyArchiveOnNode( ue4_config, String ue4_version_to_sync ) {
 
 def extractArchive( ue4_config, String ue4_version_to_sync ) {
     powershell "Get-ChildItem -Path ${ue4_config.Engine.Location} -Directory -Recurse | Remove-Item -force -recurse -ErrorAction SilentlyContinue"
-    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\${ue4_version_to_sync} \"-o${ue4_config.Engine.Location}\" -y"
+    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\${ue4_version_to_sync} \"-o${ue4_config.Engine.Location}\" -y -mmt=on"
 }
 
 def deleteArchive( ue4_config, String ue4_version_to_sync ) {
