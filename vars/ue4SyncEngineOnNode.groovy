@@ -43,12 +43,22 @@ def mustSyncUE( ue4_config ) {
     String extension = ".7z"
     String prefix = "UE"
 
+    List version_numbers = []
+
     list.each { ite ->
+        log.info ite
+
         if ( ite.endsWith( extension ) ) {
             String version_number = ite.substring( prefix.length(), ite.length() - extension.length() )
             log.info version_number
+
+            version_numbers << version_number
         }
     }
+
+    String most_recent_version = mostRecentVersion( version_numbers )
+
+    log.info "Most recent version : ${most_recent_version}"
 
     // First copy from the network share the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.reference
     def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
@@ -97,6 +107,33 @@ def mustSyncUE( ue4_config ) {
     return false
 }
 
+@NonCPS
+String mostRecentVersion(List versions) {
+  def sorted = versions.sort(false) { a, b -> 
+
+    List verA = a.tokenize('.')
+    List verB = b.tokenize('.')
+
+    def commonIndices = Math.min(verA.size(), verB.size())
+
+    for (int i = 0; i < commonIndices; ++i) {
+      def numA = verA[i].toInteger()
+      def numB = verB[i].toInteger()
+      println "comparing $numA and $numB"
+
+      if (numA != numB) {
+        return numA <=> numB
+      }
+    }
+
+    // If we got this far then all the common indices are identical, so whichever version is longer must be more recent
+    verA.size() <=> verB.size()
+  }
+
+  println "sorted versions: $sorted"
+  sorted[-1]
+}
+
 def syncUEOnNode( ue4_config ){
     copyArchiveOnNode( ue4_config )
     extractArchive( ue4_config )
@@ -110,7 +147,7 @@ def copyArchiveOnNode( ue4_config ) {
 }
 
 def extractArchive( ue4_config ) {
-    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\UE4.zip \"-o${ue4_config.Engine.Location}\" -y"
+    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\UE4.zip \"-o${ue4_config.Engine.Location}\" -y -mton"
 }
 
 def deleteArchive( ue4_config ) {
