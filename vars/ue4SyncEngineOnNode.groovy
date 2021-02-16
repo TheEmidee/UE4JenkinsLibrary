@@ -14,16 +14,19 @@ def call( ue4_config ) {
             return
         }
 
-        if ( mustSyncUE( ue4_config ) ) {
-            log.warning "Must Sync Engine on node ${env.NODE_NAME}"
-            syncUEOnNode ue4_config
-        } else {
+        def ue4_version_to_sync = getUE4FileToSync( ue4_config )
+        if ( ue4_version_to_sync == "" ) {
             log.info "No need to sync"
+        } else {
+            log.warning "Must Sync Engine on node ${env.NODE_NAME} with version ${ue4_version_to_sync}"
+
+            ue4_version_to_sync = "UE${ue4_version_to_sync}.7z"
+            syncUEOnNode ue4_config, ue4_version_to_sync
         }
     }
 }
 
-def mustSyncUE( ue4_config ) {
+def getUE4FileToSync( ue4_config ) {
     def jenkins_build_version = "JenkinsBuild.version"
     def jenkins_build_version_reference = "${jenkins_build_version}.reference"
     def jenkins_build_version_local = "${jenkins_build_version}.local"
@@ -63,14 +66,14 @@ def mustSyncUE( ue4_config ) {
     // Now copy from the engine location on the node the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.local
     if ( !roboCopy( "${ue4_config.Engine.Location}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version ) ) {
         log.warning "Failed to copy ${jenkins_build_version}"
-        return true
+        return most_recent_version
     }
 
     exists = fileExists saved_jenkins_build_version
 
     if ( !exists ) {
         log.warning "Could not find a JenkinsBuild.version file in the local folder"
-        return true
+        return most_recent_version
     }
 
     log.info "Rename ${saved_jenkins_build_version} into ${saved_jenkins_build_version_local}"
@@ -85,10 +88,10 @@ def mustSyncUE( ue4_config ) {
 
     if ( version_reference != version_local ) {
         log.warning "Different UE versions"
-        return true
+        return most_recent_version
     }
 
-    return false
+    return ""
 }
 
 @NonCPS
@@ -117,24 +120,24 @@ String mostRecentVersion(List versions) {
   sorted[-1]
 }
 
-def syncUEOnNode( ue4_config ){
-    copyArchiveOnNode( ue4_config )
-    extractArchive( ue4_config )
-    deleteArchive( ue4_config )
+def syncUEOnNode( ue4_config, String ue4_version_to_sync ){
+    copyArchiveOnNode( ue4_config, ue4_version_to_sync )
+    extractArchive( ue4_config, ue4_version_to_sync )
+    deleteArchive( ue4_config, ue4_version_to_sync )
 }
 
-def copyArchiveOnNode( ue4_config ) {
+def copyArchiveOnNode( ue4_config, String ue4_version_to_sync ) {
     def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
 
-    roboCopy( reference_engine_location, ue4_config.Engine.Location, "UE4.zip" )
+    roboCopy( reference_engine_location, ue4_config.Engine.Location, ue4_version_to_sync )
 }
 
-def extractArchive( ue4_config ) {
-    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\UE4.zip \"-o${ue4_config.Engine.Location}\" -y -mton"
+def extractArchive( ue4_config, String ue4_version_to_sync ) {
+    powershell "& \"C:\\Program Files\\7-Zip\\7z.exe\" x -aoa ${ue4_config.Engine.Location}\\${ue4_version_to_sync} \"-o${ue4_config.Engine.Location}\" -y -mton"
 }
 
-def deleteArchive( ue4_config ) {
-    def zip_path = "${ue4_config.Engine.Location}\\UE4.zip"
+def deleteArchive( ue4_config, String ue4_version_to_sync ) {
+    def zip_path = "${ue4_config.Engine.Location}\\${ue4_version_to_sync}"
 
     powershell "Remove-Item -Path ${zip_path} -Force"
 }
