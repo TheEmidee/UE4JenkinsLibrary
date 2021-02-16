@@ -33,6 +33,14 @@ def mustSyncUE( ue4_config ) {
 
     fileOperations( [ fileDeleteOperation( excludes: '', includes: 'Saved\\JenkinsBuild.*' ) ] )
 
+
+    File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
+    String[] list = dir.list(filter);
+
+    list.each { ite ->
+        log.info ite
+    }
+
     // First copy from the network share the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.reference
     def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
 
