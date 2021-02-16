@@ -33,9 +33,12 @@ def mustSyncUE( ue4_config ) {
 
     fileOperations( [ fileDeleteOperation( excludes: '', includes: 'Saved\\JenkinsBuild.*' ) ] )
 
+    log.info "Scan ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
 
     File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
     String[] list = dir.list();
+
+    log.info "Found ${list.length} files"
 
     list.each { ite ->
         log.info ite
