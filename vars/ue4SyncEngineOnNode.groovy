@@ -36,12 +36,18 @@ def mustSyncUE( ue4_config ) {
     log.info "Scan ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
 
     File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
-    String[] list = dir.list( {d, f-> f ==~ /.*.7z/ } as FilenameFilter );
+    String[] list = dir.list();
 
     log.info "Found ${list.length} files"
 
+    String extension = ".7z"
+    String prefix = "UE"
+
     list.each { ite ->
-        log.info ite
+        if ( ite.endsWith( extension ) ) {
+            String version_number = ite.substring( prefix.length(), ite.length() - extension.length() )
+            log.info version_number
+        }
     }
 
     // First copy from the network share the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.reference
