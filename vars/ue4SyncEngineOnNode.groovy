@@ -35,7 +35,7 @@ def mustSyncUE( ue4_config ) {
 
 
     File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
-    String[] list = dir.list(filter);
+    String[] list = dir.list();
 
     list.each { ite ->
         log.info ite
