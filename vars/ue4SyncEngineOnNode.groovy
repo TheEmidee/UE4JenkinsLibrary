@@ -36,7 +36,7 @@ def mustSyncUE( ue4_config ) {
     log.info "Scan ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
 
     File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
-    String[] list = dir.list();
+    String[] list = dir.list( {d, f-> f ==~ /.*.7z/ } as FilenameFilter );
 
     log.info "Found ${list.length} files"
 
