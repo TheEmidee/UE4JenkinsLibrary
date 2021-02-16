@@ -58,24 +58,7 @@ def mustSyncUE( ue4_config ) {
 
     String most_recent_version = mostRecentVersion( version_numbers )
 
-    log.info "Most recent version : ${most_recent_version}"
-
-    // First copy from the network share the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.reference
-    def reference_engine_location = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
-
-    if ( !roboCopy( reference_engine_location, "${env.WORKSPACE}\\Saved", jenkins_build_version ) ) {
-        error "Failed to copy ${jenkins_build_version} from ${reference_engine_location}"
-        return false
-    }
-
-    def exists = fileExists saved_jenkins_build_version
-    if ( !exists ) {
-        log.warning "Could not find a JenkinsBuild.version file in the network folder"
-        return true
-    }
-
-    log.info "Rename ${saved_jenkins_build_version} into ${saved_jenkins_build_version_reference}"
-    fileOperations( [ fileRenameOperation( destination: saved_jenkins_build_version_reference, source: saved_jenkins_build_version ) ] )
+    log.info "Most recent version in the remote location: ${most_recent_version}"
 
     // Now copy from the engine location on the node the JenkinsBuild.version file into the Saved folder, and name it JenkinsBuild.version.local
     if ( !roboCopy( "${ue4_config.Engine.Location}\\Engine\\Build", "${env.WORKSPACE}\\Saved", jenkins_build_version ) ) {
@@ -93,7 +76,8 @@ def mustSyncUE( ue4_config ) {
     log.info "Rename ${saved_jenkins_build_version} into ${saved_jenkins_build_version_local}"
     fileOperations( [ fileRenameOperation( destination: saved_jenkins_build_version_local, source: saved_jenkins_build_version ) ] )
 
-    def version_reference = readFile encoding: 'utf-8', file: saved_jenkins_build_version_reference
+    List tokens = most_recent_version.tokenize( '.' )
+    def version_reference = tokens[ tokens.size - 1 ]
     def version_local = readFile encoding: 'utf-8', file: saved_jenkins_build_version_local
 
     log.info "UE4 Reference version ${version_reference}"
@@ -119,7 +103,6 @@ String mostRecentVersion(List versions) {
     for (int i = 0; i < commonIndices; ++i) {
       def numA = verA[i].toInteger()
       def numB = verB[i].toInteger()
-      println "comparing $numA and $numB"
 
       if (numA != numB) {
         return numA <=> numB
