@@ -41,6 +41,11 @@ def getUE4FileToSync( ue4_config ) {
     File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
     String[] list = dir.list();
 
+    if ( list == null ) {
+        log.warning "Nothing found..."
+        return ""
+    }
+
     log.info "Found ${list.length} files"
 
     String extension = ".7z"
