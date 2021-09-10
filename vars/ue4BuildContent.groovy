@@ -9,7 +9,7 @@ def call( ue4_config, buildgraph_params ) {
 
     def buildgraph_task_name = ue4_config.Project.BuildContent.BuildGraphTaskName
 
-    if ( buildgraph_task_name == "" ) {
+    if ( !buildgraph_task_name?.trim() ) {
         log.warning "No Build Content will be done. Did you forget to fill in the BuildContent.BuildGraphTaskName section of the config file?"
         return
     }
@@ -28,17 +28,17 @@ def call( ue4_config, buildgraph_params ) {
             def git_username = ue4_config.Git.UserName
             def git_email = ue4_config.Git.Email
 
-            if ( ssh_credentials == "" ) {
+            if ( !ssh_credentials?.trim() ) {
                 log.warning "Can not commit content because the option Git.SSHAgentCredentials is not set"
                 return
             }
 
-            if ( git_username == "" ) {
+            if ( !git_username?.trim() ) {
                 log.warning "Can not commit content because the option Git.UserName is not set"
                 return
             }
 
-            if ( git_email == "" ) {
+            if ( !git_email?.trim() ) {
                 log.warning "Can not commit content because the option Git.Email is not set"
                 return
             }
