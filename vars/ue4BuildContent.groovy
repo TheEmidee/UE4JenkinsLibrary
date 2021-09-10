@@ -29,6 +29,8 @@ def call( ue4_config, buildgraph_params ) {
             buildgraph_params
             )
 
+        ue4ParseLogs( ue4_config.Project.BuildContent.LogParsers )
+
         if ( ue4_config.Project.BuildContent.CanCommitContent ) {
             def ssh_credentials = ue4_config.Git.SSHAgentCredentials
             def git_username = ue4_config.Git.UserName
