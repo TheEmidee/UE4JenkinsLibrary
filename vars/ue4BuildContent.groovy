@@ -17,6 +17,12 @@ def call( ue4_config, buildgraph_params ) {
     stage( "Build Content" ) {
         bat 'git checkout -- Content'
 
+        def buildlighting_quality = ue4_config.Project.BuildContent.BuildLighting_Quality
+
+        if ( buildlighting_quality?.trim() ) {
+            buildgraph_params[ "BuildLighting_Quality" ] = buildlighting_quality
+        }
+
         ue4RunBuildGraph( 
             ue4_config,
             buildgraph_task_name,
