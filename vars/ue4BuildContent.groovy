@@ -43,6 +43,7 @@ def call( ue4_config, buildgraph_params ) {
                 return
             }
 
+            def git_branch = env.GIT_BRANCH
             def origin_str = "origin/"
             if ( git_branch.startsWith( origin_str ) ) {
                 git_branch = git_branch.substring( origin_str.length() )
