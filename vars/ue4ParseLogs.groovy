@@ -1,10 +1,6 @@
 #!/usr/bin/groovy
 
-def call( parsers, excluded_categories ) {
-    if ( excluded_categories == null ) {
-        excluded_categories = ""
-    }
-
+def call( parsers, excluded_categories = "" ) {
     parsers.each { item -> 
         def parser = item.LogParser
 
