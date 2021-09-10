@@ -29,17 +29,17 @@ def call( ue4_config, buildgraph_params ) {
             def git_email = ue4_config.Git.Email
 
             if ( ssh_credentials == "" ) {
-                log.warning "Can not commit content because the option Git.SSHAgentCredentials is not set" )
+                log.warning "Can not commit content because the option Git.SSHAgentCredentials is not set"
                 return
             }
 
             if ( git_username == "" ) {
-                log.warning "Can not commit content because the option Git.UserName is not set" )
+                log.warning "Can not commit content because the option Git.UserName is not set"
                 return
             }
 
             if ( git_email == "" ) {
-                log.warning "Can not commit content because the option Git.Email is not set" )
+                log.warning "Can not commit content because the option Git.Email is not set"
                 return
             }
 
