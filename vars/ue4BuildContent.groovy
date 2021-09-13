@@ -62,7 +62,10 @@ def call( ue4_config, buildgraph_params ) {
                 bat "git config user.name ${git_username}"
                 bat "git switch -C ${git_branch} HEAD"
                 bat "git commit -am \"Built Content\" -n"
-                bat "git push --set-upstream origin ${git_branch}"
+
+                if ( ue4_config.Project.BuildContent.CanPushContent ) {
+                    bat "git push --set-upstream origin ${git_branch}"
+                }
             }
         }
     }
