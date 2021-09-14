@@ -24,7 +24,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
         if ( ue4_config.Project.Package.Zip ) {
             if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
-                robocopy( absolute_output_directory, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
+                roboCopy( absolute_output_directory, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
             }
 
             if ( ue4_config.Project.Package.ArchiveArtifactOnJenkins ) {
