@@ -3,13 +3,15 @@
 def call( String type, String platform, ue4_config, buildgraph_params ) {
     def zip_file_name = "${ue4_config.Project.Name}_${type}_${platform}"
     def zip_file_name_with_extension = "${zip_file_name}.zip"
+    def absolute_output_directory = "${env.WORKSPACE}\\${ue4_config.Project.RelativeOutputDirectory}"
+    def absolute_zip_file_path = "${absolute_output_directory}\\${zip_file_name_with_extension}"
     def relative_zip_file_path = "${ue4_config.Project.RelativeOutputDirectory}\\${zip_file_name_with_extension}"
 
-    buildgraph_params[ "ZipFile" ] = "${env.WORKSPACE}\\${relative_zip_file_path}"
+    buildgraph_params[ "ZipFile" ] = absolute_zip_file_path
 
     def buildgraph_task_name = "Package ${ue4_config.Project.Name} ${type} ${platform}"
 
-    buildgraph_params[ "OutputDir" ] = "${env.WORKSPACE}\\${ue4_config.Project.RelativeOutputDirectory}\\${type}\\${platform}"
+    buildgraph_params[ "OutputDir" ] = "${absolute_output_directory}\\${type}\\${platform}"
 
     ue4DeleteLogs
 
@@ -22,7 +24,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
         if ( ue4_config.Project.Package.Zip ) {
             if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
-                robocopy( env.WORKSPACE, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
+                robocopy( absolute_output_directory, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
             }
 
             if ( ue4_config.Project.Package.ArchiveArtifactOnJenkins ) {
