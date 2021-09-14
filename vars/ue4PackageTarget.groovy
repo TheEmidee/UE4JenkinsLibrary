@@ -7,6 +7,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
     def absolute_zip_file_path = "${absolute_output_directory}\\${zip_file_name_with_extension}"
     def relative_zip_file_path = "${ue4_config.Project.RelativeOutputDirectory}\\${zip_file_name_with_extension}"
 
+    buildgraph_params[ "Cook_ForceIterativeCooking" ] = ue4_config.Project.Package.ForceIterativeCooking
     buildgraph_params[ "ZipFile" ] = absolute_zip_file_path
 
     def buildgraph_task_name = "Package ${ue4_config.Project.Name} ${type} ${platform}"
