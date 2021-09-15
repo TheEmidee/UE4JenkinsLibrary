@@ -4,6 +4,7 @@ def call( ue4_config, buildgraph_params ) {
 
     if ( !ue4_config.Project.DataValidation.Run ) {
         log.warning "Data Validation disabled"
+        return
     }
 
     def buildgraph_task_name = ue4_config.Project.DataValidation.BuildGraphTaskName
