@@ -31,13 +31,13 @@ def call( ue4_config, buildgraph_params ) {
 
         ue4ParseLogs( ue4_config.Project.BuildContent.LogParsers )
 
-        if ( ue4_config.Project.BuildContent.CanCommitContent ) {
+        if ( ue4_config.Project.BuildContent.CommitContent ) {
             ue4GitCommit(
                 ue4_config, 
                 "Built Content"
             )
 
-            if ( ue4_config.Project.BuildContent.CanPushContent ) {
+            if ( ue4_config.Project.BuildContent.PushContent ) {
                 sshagent( [ ssh_credentials ] ) {
                     bat "git push --set-upstream origin ${git_branch}"
                 }
