@@ -34,6 +34,26 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
     //parallel tasks
 
+    ue4_config.Project.AdditionalBuildgraphTasks.each { iterator ->
+        def additional_buildgraph_task = iterator.BuildgraphTask
+
+        if ( on_stage_start != null ) {
+            on_stage_start( additional_buildgraph_task.TaskName )
+        }
+
+        ue4DeleteLogs
+
+        try {
+            ue4RunBuildGraph( 
+                ue4_config,
+                additional_buildgraph_task.TaskName,
+                buildgraph_params
+                )
+        } finally {
+            ue4ParseLogs( additional_buildgraph_task.LogParsers ) 
+        }
+    }
+
     if ( ue4_config.Project.Tests.Run ) {
         if ( on_stage_start != null ) {
             on_stage_start( "Run Tests" )
