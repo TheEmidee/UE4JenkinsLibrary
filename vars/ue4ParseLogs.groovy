@@ -13,13 +13,13 @@ def call( parsers ) {
 
                 def log_file_path = "${log_folder}\\${parser.LogFileName}.log"
 
-                def custom_name = parser.CustomName
-                if ( !custom_name?.trim() ) {
-                    custom_name = parser.ParserName
+                def parser_id = parser.ParserId
+                if ( !parser_id?.trim() ) {
+                    parser_id = parser.ParserName
                 }
 
                 // recordIssues sometimes times out so first scan then publish
-                def issues = scanForIssues blameDisabled: true, forensicsDisabled: true, tool: groovyScript(parserId: "${parser.ParserName}", name: "${custom_name}", pattern: "${log_file_path}", reportEncoding: 'UTF-8')
+                def issues = scanForIssues blameDisabled: true, forensicsDisabled: true, tool: groovyScript(parserId: "${parser_id}", name: "${parser.ParserName}", pattern: "${log_file_path}", reportEncoding: 'UTF-8')
                 publishIssues failOnError: true, qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true]], issues: [ issues ]
             }
         } catch ( e ) {
