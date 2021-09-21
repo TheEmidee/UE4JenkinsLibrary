@@ -43,14 +43,16 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
         ue4DeleteLogs
 
-        try {
-            ue4RunBuildGraph( 
-                ue4_config,
-                additional_buildgraph_task.TaskName,
-                buildgraph_params
-                )
-        } finally {
-            ue4ParseLogs( additional_buildgraph_task.LogParsers ) 
+        stage( additional_buildgraph_task.TaskName ) {
+            try {
+                ue4RunBuildGraph( 
+                    ue4_config,
+                    additional_buildgraph_task.TaskName,
+                    buildgraph_params
+                    )
+            } finally {
+                ue4ParseLogs( additional_buildgraph_task.LogParsers ) 
+            }
         }
     }
 
