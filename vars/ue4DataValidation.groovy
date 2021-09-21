@@ -23,7 +23,6 @@ def call( ue4_config, buildgraph_params ) {
             buildgraph_params
             )
 
-        def config_excluded_categories = ue4_config.Project.IssuesExcludedCategories.join('|')
         ue4ParseLogs( ue4_config.Project.DataValidation.LogParsers )
         ue4ZipLogs "DataValidation"
     }
