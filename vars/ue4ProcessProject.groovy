@@ -48,6 +48,11 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
         stage( additional_buildgraph_task.TaskName ) {
             try {
+                additional_buildgraph_task.AdditionalBuildgraphProperties.each { iterator ->
+                    def property = iterator.Property
+                    buildgraph_params[ property.Name ] = property.Value
+                }
+
                 ue4RunBuildGraph( 
                     ue4_config,
                     additional_buildgraph_task.TaskName,
@@ -55,6 +60,11 @@ def call( ue4_config, Closure on_stage_start = null ) {
                     )
             } finally {
                 ue4ParseLogs( additional_buildgraph_task.LogParsers ) 
+
+                additional_buildgraph_task.AdditionalBuildgraphProperties.each { iterator ->
+                    def property = iterator.Property
+                    buildgraph_params.remove( property.Name )
+                }
             }
         }
     }
