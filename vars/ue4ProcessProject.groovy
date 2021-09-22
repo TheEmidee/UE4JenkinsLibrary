@@ -37,8 +37,8 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
     ue4DeleteTestsFolder
 
-    ue4_config.Project.AdditionalBuildgraphTasks.each { iterator ->
-        def additional_buildgraph_task = iterator.BuildgraphTask
+    ue4_config.Project.AdditionalBuildgraphTasks.each { task_iterator ->
+        def additional_buildgraph_task = task_iterator.BuildgraphTask
 
         if ( on_stage_start != null ) {
             on_stage_start( additional_buildgraph_task.TaskName )
@@ -48,8 +48,8 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
         stage( additional_buildgraph_task.TaskName ) {
             try {
-                additional_buildgraph_task.AdditionalBuildgraphProperties.each { iterator ->
-                    def property = iterator.Property
+                additional_buildgraph_task.AdditionalBuildgraphProperties.each { set_property_iterator ->
+                    def property = set_property_iterator.Property
                     buildgraph_params[ property.Name ] = property.Value
                 }
 
@@ -61,8 +61,8 @@ def call( ue4_config, Closure on_stage_start = null ) {
             } finally {
                 ue4ParseLogs( additional_buildgraph_task.LogParsers ) 
 
-                additional_buildgraph_task.AdditionalBuildgraphProperties.each { iterator ->
-                    def property = iterator.Property
+                additional_buildgraph_task.AdditionalBuildgraphProperties.each { unset_property_iterator ->
+                    def property = unset_property_iterator.Property
                     buildgraph_params.remove( property.Name )
                 }
             }
