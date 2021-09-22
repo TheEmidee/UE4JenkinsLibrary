@@ -3,6 +3,7 @@
 def call( ue4_config, Closure on_stage_start = null ) {
 
     ue4CleanSavedFolder ue4_config
+    ue4InitializeLogParsers ue4_config
 
     def buildgraph_params = ue4InitializeBuildGraphParameters()
 
