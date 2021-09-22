@@ -34,6 +34,8 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
     //parallel tasks
 
+    ue4DeleteTestsFolder
+
     ue4_config.Project.AdditionalBuildgraphTasks.each { iterator ->
         def additional_buildgraph_task = iterator.BuildgraphTask
 
