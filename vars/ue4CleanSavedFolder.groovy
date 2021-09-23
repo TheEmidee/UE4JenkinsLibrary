@@ -9,4 +9,10 @@ def call( ue4_config ) {
         folderDeleteOperation( 'Saved\\Tests' ),
         folderDeleteOperation( ue4_config.Project.RelativeOutputDirectory )
     ] )
+
+    if ( ue4_config.Project.DeleteSavedConfigFolder ) {
+        fileOperations( [ 
+            folderDeleteOperation( 'Saved\\Config' ),
+        ])
+    }
 }

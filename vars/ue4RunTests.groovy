@@ -12,12 +12,22 @@ def call( ue4_config, buildgraph_params ) {
 
     stage( buildgraph_task_name ) {
         try {
+            ue4_config.Project.Tests.AdditionalBuildgraphProperties.each { set_property_iterator ->
+                def property = set_property_iterator.Property
+                buildgraph_params[ property.Name ] = property.Value
+            }
+
             ue4RunBuildGraph( 
                 ue4_config,
                 buildgraph_task_name,
                 buildgraph_params
                 )
         } finally {
+            ue4_config.Project.Tests.AdditionalBuildgraphProperties.each { unset_property_iterator ->
+                def property = unset_property_iterator.Property
+                buildgraph_params.remove( property.Name )
+            }
+
             ue4ZipLogs "Tests"
 
             if ( fileExists ( 'Saved\\Tests\\Logs' ) ) {
