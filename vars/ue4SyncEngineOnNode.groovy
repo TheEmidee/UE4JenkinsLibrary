@@ -39,7 +39,8 @@ def getUE4FileToSync( ue4_config ) {
     def folder = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
     log.info "Scan ${folder}"
 
-    final list = sh(script: "ls -1 " +folder, returnStdout: true).split()
+    def unix_folder = folder.replaceAll('\\\\','/')
+    final list = sh(script: "ls -1 ${unix_folder}", returnStdout: true).split()
 
     if ( list == null ) {
         log.warning "Nothing found..."
