@@ -38,8 +38,7 @@ def getUE4FileToSync( ue4_config ) {
 
     log.info "Scan ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
 
-    File dir = new File( "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}" );
-    String[] list = dir.list();
+    final list = sh(script: "ls -1 ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}", returnStdout: true).split()
 
     if ( list == null ) {
         log.warning "Nothing found..."
