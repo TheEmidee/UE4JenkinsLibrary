@@ -36,9 +36,10 @@ def getUE4FileToSync( ue4_config ) {
 
     fileOperations( [ fileDeleteOperation( excludes: '', includes: 'Saved\\JenkinsBuild.*' ) ] )
 
-    log.info "Scan ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
+    def folder = "${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}"
+    log.info "Scan ${folder}"
 
-    final list = sh(script: "ls -1 ${ue4_config.Engine.ReferenceBuildLocation}\\${ue4_config.Engine.Version}", returnStdout: true).split()
+    final list = sh(script: "ls -1 " +folder, returnStdout: true).split()
 
     if ( list == null ) {
         log.warning "Nothing found..."
