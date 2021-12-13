@@ -34,7 +34,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
         }
 
         if ( ue4_config.Project.Package.RecordIssues ) {
-            recordIssues tools: [groovyScript(id: "BuildCookRun_${type}_${platform}", name: "BuildCookRun_${type}_${platform}", parserId: 'UE4_BuildCookRun', pattern: 'Saved/Logs/Log.txt')], , failOnError: true, filters: [ excludeCategory('LogTemp|ModuleManager|SwarmsEditor') ], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]], 
+            recordIssues tools: [groovyScript(id: "BuildCookRun_${type}_${platform}", name: "BuildCookRun_${type}_${platform}", parserId: 'UE4_BuildCookRun', pattern: 'Saved/Logs/Log.txt')], failOnError: true, filters: [ excludeCategory('LogTemp|ModuleManager|SwarmsEditor') ], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
             recordIssues tools: [msBuild(id: "MSBuild_${type}_${platform}", name: "MSBuild_${type}_${platform}")], failOnError: true, filters: [excludeCategory( 'LogTemp|ModuleManager|SwarmsEditor' )], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
         }
 
