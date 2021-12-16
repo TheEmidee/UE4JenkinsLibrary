@@ -2,7 +2,7 @@
 
 def call( ue4_config, buildgraph_params ) {
 
-    if ( !ue4_config.Project.BuildContent.CanBuildContent ) {
+    if ( !ue4_config.Project.BuildContent.Run ) {
         log.info( "Build Content disabled" )
         return
     }
