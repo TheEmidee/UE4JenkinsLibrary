@@ -34,7 +34,7 @@ def call( ue4_config, buildgraph_params ) {
         if ( ue4_config.Project.BuildContent.CommitContent ) {
             ue4GitCommit(
                 ue4_config, 
-                "Built Content"
+                "Build Content"
             )
 
             if ( ue4_config.Project.BuildContent.PushContent ) {

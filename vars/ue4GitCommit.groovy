@@ -5,6 +5,7 @@ def call( ue4_config, String commit_message ) {
     def ssh_credentials = ue4_config.Git.SSHAgentCredentials
     def git_username = ue4_config.Git.UserName
     def git_email = ue4_config.Git.Email
+    def git_commit_message_prefix = ue4_config.Git.CommitMessagePrefix
 
     if ( !ssh_credentials?.trim() ) {
         log.warning "Can not commit content because the option Git.SSHAgentCredentials is not set"
@@ -31,5 +32,5 @@ def call( ue4_config, String commit_message ) {
     bat "git switch -C ${git_branch} HEAD"
     bat "git config user.email ${git_email}"
     bat "git config user.name ${git_username}"
-    bat "git commit -am \"${commit_message}\" -n"
+    bat "git commit -am \"${git_commit_message_prefix} ${commit_message}\" -n"
 }
