@@ -44,7 +44,7 @@ def call( ue4_config, Closure on_stage_start = null ) {
             on_stage_start( additional_buildgraph_task.TaskName )
         }
 
-        ue4DeleteLogs( ue4Config )
+        ue4DeleteLogs( ue4_config )
 
         stage( additional_buildgraph_task.TaskName ) {
             try {

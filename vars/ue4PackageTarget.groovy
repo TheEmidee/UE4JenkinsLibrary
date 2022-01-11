@@ -14,7 +14,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
     buildgraph_params[ "OutputDir" ] = "${absolute_output_directory}\\${type}\\${platform}"
 
-    ue4DeleteLogs( ue4Config )
+    ue4DeleteLogs( ue4_config )
 
     stage( buildgraph_task_name ) {
         ue4RunBuildGraph(

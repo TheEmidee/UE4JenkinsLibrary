@@ -8,7 +8,7 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
-    ue4DeleteLogs( ue4Config )
+    ue4DeleteLogs( ue4_config )
 
     stage( buildgraph_task_name ) {
         try {
