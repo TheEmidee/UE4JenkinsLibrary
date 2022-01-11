@@ -2,6 +2,11 @@
 
 def call( ue4_config ) {
     stage ( "SyncUE" ) {
+        if ( ue4_config.Options.Stub ) {
+            echo "Would sync UE on the node"
+            return
+        } 
+
         log.info "Check if the engine must be synchronized on the node ${env.NODE_NAME}"
 
         if ( ue4_config.Engine.Version == null || ue4_config.Engine.Version == "" ) {

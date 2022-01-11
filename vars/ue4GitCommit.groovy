@@ -29,8 +29,8 @@ def call( ue4_config, String commit_message ) {
         git_branch = git_branch.substring( origin_str.length() )
     }
 
-    bat "git switch -C ${git_branch} HEAD"
-    bat "git config user.email ${git_email}"
-    bat "git config user.name ${git_username}"
-    bat "git commit -am \"${git_commit_message_prefix} ${commit_message}\" -n"
+    ue4Bat( ue4_config, "git switch -C ${git_branch} HEAD" )
+    ue4Bat( ue4_config, "git config user.email ${git_email}" )
+    ue4Bat( ue4_config, "git config user.name ${git_username}" )
+    ue4Bat( ue4_config, "git commit -am \"${git_commit_message_prefix} ${commit_message}\" -n" )
 }
