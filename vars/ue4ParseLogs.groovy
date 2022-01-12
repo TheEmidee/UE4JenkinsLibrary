@@ -2,7 +2,14 @@
 
 def call( ue4_config, parsers ) {
     if ( ue4_config.Options.Stub ) {
-        echo "Would parse logs"
+        
+        def parsers_list = ""
+        parsers.each { item -> 
+            def parser = item.LogParser
+            parsers_list += "${parser.ParserName} - "
+        }
+
+        echo "Would parse logs with ${parsers_list}"
     } else {
         parsers.each { item -> 
             def parser = item.LogParser
