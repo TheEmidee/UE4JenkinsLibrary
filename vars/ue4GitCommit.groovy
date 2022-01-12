@@ -22,7 +22,7 @@ def call( ue4_config, String commit_message ) {
         return
     }
 
-    def git_branch = env.GIT_BRANCH
+    def git_branch = getBranchName()
     def origin_str = "origin/"
 
     if ( git_branch.startsWith( origin_str ) ) {
