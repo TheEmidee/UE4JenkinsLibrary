@@ -17,11 +17,12 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
     ue4DeleteLogs( ue4_config )
 
     stage( buildgraph_task_name ) {
-        ue4RunBuildGraph(
-            ue4_config,
-            buildgraph_task_name,
-            buildgraph_params
-        )
+        try {
+            ue4RunBuildGraph(
+                ue4_config,
+                buildgraph_task_name,
+                buildgraph_params
+            )
 
         if ( ue4_config.Project.Package.Zip ) {
             if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
@@ -33,15 +34,15 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             }
 
             if ( ue4_config.Project.Package.ArchiveArtifactOnJenkins ) {
-                    if ( ue4_config.Options.Stub ) {
-                        echo "Would archiveArtifacts ${relative_zip_file_path}"
-                    } else {
-                        archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
-                    }
+                if ( ue4_config.Options.Stub ) {
+                    echo "Would archiveArtifacts ${relative_zip_file_path}"
+                } else {
+                    archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
+                }
             }
         }
-
-        if ( ue4_config.Project.Package.RecordIssues ) {
+        finally {
+            if ( ue4_config.Project.Package.RecordIssues ) {
                 if ( ue4_config.Options.Stub ) {
                     echo "Would record issues for BuildCookRun"
                 } else {
