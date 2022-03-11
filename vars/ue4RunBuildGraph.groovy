@@ -2,6 +2,11 @@
 
 def call( ue4_config, String task, Map parameters = [:] ) {
 
+    if ( ue4_config.Options.Stub ) {
+        echo "Would run build graph task ${task} with parameters ${parameters}"
+        return
+    }
+
     fileOperations( [ 
         fileDeleteOperation( excludes: '', includes: 'Saved\\Logs\\*.*' )
     ] )

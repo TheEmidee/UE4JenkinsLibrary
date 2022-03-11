@@ -15,7 +15,7 @@ def call( ue4_config, buildgraph_params ) {
     }
 
     stage( "Build Content" ) {
-        bat 'git checkout -- Content'
+        ue4Bat( ue4_config, 'git checkout -- Content' )
 
         def buildlighting_quality = ue4_config.Project.BuildContent.BuildLighting_Quality
 
@@ -29,17 +29,17 @@ def call( ue4_config, buildgraph_params ) {
             buildgraph_params
             )
 
-        ue4ParseLogs( ue4_config.Project.BuildContent.LogParsers )
+        ue4ParseLogs( ue4_config, ue4_config.Project.BuildContent.LogParsers )
 
         if ( ue4_config.Project.BuildContent.CommitContent ) {
             ue4GitCommit(
                 ue4_config, 
-                "Built Content"
+                "Build Content"
             )
 
             if ( ue4_config.Project.BuildContent.PushContent ) {
                 sshagent( [ ssh_credentials ] ) {
-                    bat "git push --set-upstream origin ${git_branch}"
+                    ue4Bat( ue4_config, "git push --set-upstream origin ${git_branch}" )
                 }
             }
         }

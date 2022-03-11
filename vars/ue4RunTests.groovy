@@ -8,7 +8,7 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
-    ue4DeleteLogs
+    ue4DeleteLogs( ue4_config )
 
     stage( buildgraph_task_name ) {
         try {
@@ -28,11 +28,15 @@ def call( ue4_config, buildgraph_params ) {
                 buildgraph_params.remove( property.Name )
             }
 
-            ue4ZipLogs "Tests"
+            ue4ZipLogs( ue4_config, "Tests" )
 
             if ( fileExists ( 'Saved\\Tests\\Logs' ) ) {
-                zip archive: true, dir: "Saved\\Tests\\Logs", glob: '', zipFile: 'Saved\\Tests\\Tests_Results.zip'
-                junit testResults: "Saved\\Tests\\Logs\\FunctionalTestsResults.xml"
+                    if ( ue4_config.Options.Stub ) {
+                        echo "Would archive test results and publish jUnit"
+                    } else {
+                        zip archive: true, dir: "Saved\\Tests\\Logs", glob: '', zipFile: 'Saved\\Tests\\Tests_Results.zip'
+                        junit testResults: "Saved\\Tests\\Logs\\FunctionalTestsResults.xml"
+                    }
             }
         }
     }

@@ -14,7 +14,7 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
     buildgraph_params[ "OutputDir" ] = "${absolute_output_directory}\\${type}\\${platform}"
 
-    ue4DeleteLogs
+    ue4DeleteLogs( ue4_config )
 
     stage( buildgraph_task_name ) {
         try {
@@ -24,23 +24,33 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
                 buildgraph_params
             )
 
-            if ( ue4_config.Project.Package.Zip ) {
-                if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
+        if ( ue4_config.Project.Package.Zip ) {
+            if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
+                if ( ue4_config.Options.Stub ) {
+                    log.info "Would robocopy ${absolute_output_directory} to ${ue4_config.Project.Package.ArchiveDirectory} with arguments ${zip_file_name_with_extension}"
+                } else {
                     roboCopy( absolute_output_directory, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
                 }
+            }
 
-                if ( ue4_config.Project.Package.ArchiveArtifactOnJenkins ) {
+            if ( ue4_config.Project.Package.ArchiveArtifactOnJenkins ) {
+                if ( ue4_config.Options.Stub ) {
+                    echo "Would archiveArtifacts ${relative_zip_file_path}"
+                } else {
                     archiveArtifacts artifacts: relative_zip_file_path, followSymlinks: false, onlyIfSuccessful: true
                 }
             }
         }
         finally {
             if ( ue4_config.Project.Package.RecordIssues ) {
-                recordIssues tools: [groovyScript(id: "BuildCookRun_${type}_${platform}", name: "BuildCookRun_${type}_${platform}", parserId: 'UE4_BuildCookRun', pattern: 'Saved/Logs/Log.txt')], failOnError: true, filters: [ excludeCategory('LogTemp|ModuleManager|SwarmsEditor') ], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
-                recordIssues tools: [msBuild(id: "MSBuild_${type}_${platform}", name: "MSBuild_${type}_${platform}", pattern: 'Saved/Logs/UBT-*.txt')], failOnError: true, filters: [excludeCategory( 'LogTemp|ModuleManager|SwarmsEditor' )], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
-            }
-
-            ue4ZipLogs zip_file_name
+                if ( ue4_config.Options.Stub ) {
+                    echo "Would record issues for BuildCookRun"
+                } else {
+                    recordIssues tools: [groovyScript(id: "BuildCookRun_${type}_${platform}", name: "BuildCookRun_${type}_${platform}", parserId: 'UE4_BuildCookRun', pattern: 'Saved/Logs/Log.txt')], failOnError: true, filters: [ excludeCategory('LogTemp|ModuleManager|SwarmsEditor') ], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+                    recordIssues tools: [msBuild(id: "MSBuild_${type}_${platform}", name: "MSBuild_${type}_${platform}")], failOnError: true, filters: [excludeCategory( 'LogTemp|ModuleManager|SwarmsEditor' )], qualityGates: [[threshold: 1, type: 'TOTAL_ERROR', unstable: false], [threshold: 1, type: 'TOTAL_NORMAL', unstable: true], [threshold: 1, type: 'NEW', unstable: false]]
+                }
         }
+
+        ue4ZipLogs( ue4_config, zip_file_name )
     }
 }

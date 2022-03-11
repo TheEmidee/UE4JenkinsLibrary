@@ -14,7 +14,7 @@ def call( ue4_config, buildgraph_params ) {
         return
     }
 
-    ue4DeleteLogs
+    ue4DeleteLogs( ue4_config )
 
     stage( "Data Validation" ) {
         ue4RunBuildGraph( 
@@ -23,7 +23,7 @@ def call( ue4_config, buildgraph_params ) {
             buildgraph_params
             )
 
-        ue4ParseLogs( ue4_config.Project.DataValidation.LogParsers )
-        ue4ZipLogs "DataValidation"
+        ue4ParseLogs( ue4_config, ue4_config.Project.DataValidation.LogParsers )
+        ue4ZipLogs( ue4_config, "DataValidation" )
     }
 }

@@ -5,6 +5,7 @@ def call( ue4_config, String commit_message ) {
     def ssh_credentials = ue4_config.Git.SSHAgentCredentials
     def git_username = ue4_config.Git.UserName
     def git_email = ue4_config.Git.Email
+    def git_commit_message_prefix = ue4_config.Git.CommitMessagePrefix
 
     if ( !ssh_credentials?.trim() ) {
         log.warning "Can not commit content because the option Git.SSHAgentCredentials is not set"
@@ -21,15 +22,15 @@ def call( ue4_config, String commit_message ) {
         return
     }
 
-    def git_branch = env.GIT_BRANCH
+    def git_branch = getBranchName()
     def origin_str = "origin/"
 
     if ( git_branch.startsWith( origin_str ) ) {
         git_branch = git_branch.substring( origin_str.length() )
     }
 
-    bat "git switch -C ${git_branch} HEAD"
-    bat "git config user.email ${git_email}"
-    bat "git config user.name ${git_username}"
-    bat "git commit -am \"${commit_message}\" -n"
+    ue4Bat( ue4_config, "git switch -C ${git_branch} HEAD" )
+    ue4Bat( ue4_config, "git config user.email ${git_email}" )
+    ue4Bat( ue4_config, "git config user.name ${git_username}" )
+    ue4Bat( ue4_config, "git commit -am \"${git_commit_message_prefix} ${commit_message}\" -n" )
 }
