@@ -15,6 +15,7 @@ def call( ue4_config, Closure on_stage_start = null ) {
 
     buildgraph_params[ "ArchivePackage" ] = ue4_config.Project.Package.Archive
     buildgraph_params[ "ZipPackage" ] = ue4_config.Project.Package.Archive && ue4_config.Project.Package.Zip
+    buildgraph_params[ "UploadSymbols" ] = ue4_config.Project.Package.UploadSymbols
 
     ue4BuildContent ue4_config, buildgraph_params
 
