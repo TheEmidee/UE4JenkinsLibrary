@@ -18,6 +18,13 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
 
     stage( buildgraph_task_name ) {
         try {
+            if ( ue4_config.Project.Package.Zip ) {
+                if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
+                    buildgraph_params[ "BackupPackage" ] = "True"
+                    buildgraph_params[ "BackupDir" ] = ue4_config.Project.Package.ArchiveDirectory
+                }
+            }
+
             ue4RunBuildGraph(
                 ue4_config,
                 buildgraph_task_name,
@@ -25,13 +32,13 @@ def call( String type, String platform, ue4_config, buildgraph_params ) {
             )
 
             if ( ue4_config.Project.Package.Zip ) {
-                if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
-                    if ( ue4_config.Options.Stub ) {
-                        log.info "Would robocopy ${absolute_output_directory} to ${ue4_config.Project.Package.ArchiveDirectory} with arguments ${zip_file_name_with_extension}"
-                    } else {
-                        roboCopy( absolute_output_directory, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
-                    }
-                }
+                // if ( ue4_config.Project.Package.ArchiveDirectory?.trim() ) {
+                //     if ( ue4_config.Options.Stub ) {
+                //         log.info "Would robocopy ${absolute_output_directory} to ${ue4_config.Project.Package.ArchiveDirectory} with arguments ${zip_file_name_with_extension}"
+                //     } else {
+                //         roboCopy( absolute_output_directory, ue4_config.Project.Package.ArchiveDirectory, zip_file_name_with_extension )
+                //     }
+                // }
 
                 if ( ue4_config.Project.Package.ArchiveArtifactOnJenkins ) {
                     if ( ue4_config.Options.Stub ) {
